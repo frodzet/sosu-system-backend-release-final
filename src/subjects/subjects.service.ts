@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import {
   Address,
   CreateSubjectDto,
+  HealthCondition,
+  HealthConditionItem,
   Subject,
   UpdateAddressDto,
-  UpdateSubjectDto,
+  UpdateHealthConditionItemDto,
 } from '../core';
 import { MongoDataServices } from '../infrastructure/mongodb/mongo-data-services.service';
 import { SubjectFactoryService } from './subject-factory.service';
+import { SubTitles, Titles, TitlesGenerator } from './item-titles-generator';
+
 const mongoose = require('mongoose');
 
 @Injectable()
@@ -15,6 +19,7 @@ export class SubjectsService {
   constructor(
     private dataServices: MongoDataServices,
     private factoryService: SubjectFactoryService,
+    private titlesGenerator: TitlesGenerator,
   ) {}
 
   async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
@@ -28,30 +33,66 @@ export class SubjectsService {
         street: createSubjectDto.address.street,
         postCode: createSubjectDto.address.postCode,
       },
-      healthConditions:
-        await this.dataServices._healthConditionDocumentModel.create([
-          {
-            _id: mongoose.Types.ObjectId(),
-            title: 'Funktionsniveau',
-            healthConditionItems:
-              await this.dataServices._healthConditionItemDocumentModel.create([
-                {
-                  _id: mongoose.Types.ObjectId(),
-                  subTitle: 'Problemer med personlig pleje',
-                  description: '',
-                  reason: '',
-                  relevant: 2,
-                },
-                {
-                  _id: mongoose.Types.ObjectId(),
-                  subTitle: 'Problemer med daglige aktiviteter',
-                  description: '',
-                  reason: '',
-                  relevant: 2,
-                },
-              ]),
-          },
-        ]),
+      healthConditions: await this.createHealthCondition(),
+      // healthConditions:
+      //   await this.dataServices._healthConditionDocumentModel.create([
+      //     {
+      //       _id: mongoose.Types.ObjectId(),
+      //       title: Titles.FUNCTION_LEVEL,
+      //       healthConditionItems:
+      //         await this.dataServices._healthConditionItemDocumentModel.create([
+      //           {
+      //             _id: mongoose.Types.ObjectId(),
+      //             subTitle: SubTitles.PROBLEMS_WITH_PERSONAL_CARE,
+      //             description: '',
+      //             reason: '',
+      //             relevant: null,
+      //           },
+      //           {
+      //             _id: mongoose.Types.ObjectId(),
+      //             subTitle: SubTitles.PROBLEMS_WITH_DAILY_ACTIVITIES,
+      //             description: '',
+      //             reason: '',
+      //             relevant: null,
+      //           },
+      //         ]),
+      //     },
+      //     {
+      //       _id: mongoose.Types.ObjectId(),
+      //       title: Titles.MUSCULOSKELETAL_SYSTEM,
+      //       healthConditionItems:
+      //         await this.dataServices._healthConditionItemDocumentModel.create([
+      //           {
+      //             _id: mongoose.Types.ObjectId(),
+      //             subTitle: 'Problemer med mobilitet og bevægelse',
+      //             description: '',
+      //             reason: '',
+      //             relevant: null,
+      //           },
+      //         ]),
+      //     },
+      //     {
+      //       _id: mongoose.Types.ObjectId(),
+      //       title: Titles.NUTRITION,
+      //       healthConditionItems:
+      //         await this.dataServices._healthConditionItemDocumentModel.create([
+      //           {
+      //             _id: mongoose.Types.ObjectId(),
+      //             subTitle: 'Problemer med væskeindtag',
+      //             description: '',
+      //             reason: '',
+      //             relevant: null,
+      //           },
+      //           {
+      //             _id: mongoose.Types.ObjectId(),
+      //             subTitle: 'Problemer med fødeindtag',
+      //             description: '',
+      //             reason: '',
+      //             relevant: null,
+      //           },
+      //         ]),
+      //     },
+      //   ]),
     });
 
     const newSubject = await this.dataServices._subjectDocumentModel.create(
@@ -70,7 +111,7 @@ export class SubjectsService {
     const allSubjects = this.dataServices._subjectDocumentModel
       .find()
       .populate('address')
-      .populate('healthCondition');
+      .populate('healthConditions');
 
     return allSubjects;
   }
@@ -79,7 +120,55 @@ export class SubjectsService {
     return this.dataServices._subjectDocumentModel
       .findOne({ _id: id })
       .populate('address')
-      .populate('healthCondition');
+      .populate({
+        path: 'healthConditions',
+        populate: { path: 'healthConditionItems' },
+      });
+  }
+
+  async createHealthCondition(): Promise<any> {
+    const allTitles = this.titlesGenerator.getTitles();
+    const allHealthConditions: any[] = [];
+    const allItems: any[] = [];
+
+    for (const [key, values] of allTitles) {
+      for (const v of values) {
+        const item =
+          await this.dataServices._healthConditionItemDocumentModel.create({
+            _id: mongoose.Types.ObjectId(),
+            subTitle: v,
+            description: '',
+            reason: '',
+            relevant: null,
+          });
+        allItems.push(item);
+      }
+      const healthCondition =
+        await this.dataServices._healthConditionDocumentModel.create({
+          _id: mongoose.Types.ObjectId(),
+          title: key,
+          healthConditionItems: allItems,
+        });
+      allHealthConditions.push(healthCondition);
+    }
+
+    return allHealthConditions;
+
+    // for (const v of values) {
+    //   items.push(
+    //     await this.dataServices._healthConditionItemDocumentModel.create({
+    //       subTitle: v,
+    //       description: '',
+    //       reason: '',
+    //       relevant: null,
+    //     }),
+    //   );
+    // }
+    // await this.dataServices._healthConditionDocumentModel.create({
+    //   _id: mongoose.Types.ObjectId(),
+    //   title: key,
+    //   healthConditionItems: items,
+    // });
   }
 
   // findOne(id: number) {
@@ -109,6 +198,18 @@ export class SubjectsService {
         _id: addressId,
       },
       updateAddressDto,
+      { new: true },
+    );
+  }
+
+  async updateItem(
+    subjectId: string,
+    itemId: string,
+    updateItemDto: UpdateHealthConditionItemDto,
+  ): Promise<HealthConditionItem> {
+    return this.dataServices._healthConditionItemDocumentModel.findOneAndUpdate(
+      { _id: itemId },
+      updateItemDto,
       { new: true },
     );
   }

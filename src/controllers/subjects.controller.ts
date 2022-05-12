@@ -10,8 +10,10 @@ import {
 import { SubjectsService } from '../subjects/subjects.service';
 import {
   CreateSubjectDto,
+  HealthConditionItem,
   Subject,
   UpdateAddressDto,
+  UpdateHealthConditionItemDto,
   UpdateSubjectDto,
 } from '../core';
 
@@ -45,6 +47,15 @@ export class SubjectsController {
     @Body() updateAddressDto: UpdateAddressDto,
   ) {
     return this.subjectsService.updateAddress(addressId, updateAddressDto);
+  }
+
+  @Patch(':subjectId/items/:itemId')
+  updateItem(
+    @Param('subjectId') subjectId: string,
+    @Param('itemId') itemId: string,
+    @Body() updateItemDto: UpdateHealthConditionItemDto,
+  ): Promise<HealthConditionItem> {
+    return this.subjectsService.updateItem(subjectId, itemId, updateItemDto);
   }
   //
   // @Delete(':id')
