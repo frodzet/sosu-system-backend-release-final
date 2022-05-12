@@ -126,10 +126,11 @@ export class SubjectsService {
       });
   }
 
-  async createHealthCondition(): Promise<any> {
+  /** Generates all basic health-conditions */
+  async createHealthCondition(): Promise<HealthCondition[]> {
     const allTitles = this.titlesGenerator.getTitles();
-    const allHealthConditions: any[] = [];
-    const allItems: any[] = [];
+    const allHealthConditions: HealthCondition[] = [];
+    const allItems: HealthConditionItem[] = [];
 
     for (const [key, values] of allTitles) {
       for (const v of values) {
@@ -153,22 +154,6 @@ export class SubjectsService {
     }
 
     return allHealthConditions;
-
-    // for (const v of values) {
-    //   items.push(
-    //     await this.dataServices._healthConditionItemDocumentModel.create({
-    //       subTitle: v,
-    //       description: '',
-    //       reason: '',
-    //       relevant: null,
-    //     }),
-    //   );
-    // }
-    // await this.dataServices._healthConditionDocumentModel.create({
-    //   _id: mongoose.Types.ObjectId(),
-    //   title: key,
-    //   healthConditionItems: items,
-    // });
   }
 
   // findOne(id: number) {

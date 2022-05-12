@@ -28,7 +28,11 @@ export class MongoDataServices implements OnApplicationBootstrap {
     private healthConditionDocumentModel: Model<HealthConditionDocument>,
     @InjectModel(HealthConditionItem.name)
     private healthConditionItemDocumentModel: Model<HealthConditionItemDocument>,
-  ) {}
+  ) {
+    this.subjectDocumentModel.db.db
+      .dropDatabase()
+      .then((r) => console.log('database dropped'));
+  }
 
   onApplicationBootstrap() {
     this._subjectDocumentModel = this.subjectDocumentModel;
