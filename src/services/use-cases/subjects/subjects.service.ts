@@ -7,10 +7,9 @@ import {
   Subject,
   UpdateAddressDto,
   UpdateHealthConditionItemDto,
-} from '../core';
-import { MongoDataServices } from '../infrastructure/mongodb/mongo-data-services.service';
-import { SubjectFactoryService } from './subject-factory.service';
-import { SubTitles, Titles, TitlesGenerator } from './item-titles-generator';
+} from '../../../core';
+import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
+import { TitlesGenerator } from './utils/item-titles-generator';
 
 const mongoose = require('mongoose');
 
@@ -18,12 +17,11 @@ const mongoose = require('mongoose');
 export class SubjectsService {
   constructor(
     private dataServices: MongoDataServices,
-    private factoryService: SubjectFactoryService,
     private titlesGenerator: TitlesGenerator,
   ) {}
 
   async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    const subjectDto = this.factoryService.createNewSubject({
+    const newSubject = await this.dataServices._subjectDocumentModel.create({
       firstName: createSubjectDto.firstName,
       lastName: createSubjectDto.lastName,
       email: createSubjectDto.email,
@@ -35,10 +33,6 @@ export class SubjectsService {
       },
       healthConditions: await this.createHealthCondition(),
     });
-
-    const newSubject = await this.dataServices._subjectDocumentModel.create(
-      subjectDto,
-    );
     await newSubject.populate('address');
     await newSubject.populate({
       path: 'healthConditions',
@@ -49,15 +43,13 @@ export class SubjectsService {
   }
 
   async findAll(): Promise<Subject[]> {
-    const allSubjects = this.dataServices._subjectDocumentModel
+    return this.dataServices._subjectDocumentModel
       .find()
       .populate('address')
       .populate({
         path: 'healthConditions',
         populate: { path: 'healthConditionItems' },
       });
-
-    return allSubjects;
   }
 
   async findOne(id: string): Promise<Subject> {
@@ -69,24 +61,6 @@ export class SubjectsService {
         populate: { path: 'healthConditionItems' },
       });
   }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} subject`;
-  // }
-  //
-  // async update(
-  //   id: string,
-  //   updateSubjectDto: UpdateSubjectDto,
-  // ): Promise<Subject> {
-  //   return this.dataServices._subjectDocumentModel.findOneAndUpdate(
-  //     { _id: id },
-  //     updateSubjectDto,
-  //   );
-  // }
-  //
-  // remove(id: number) {
-  //   return `This action removes a #${id} subject`;
-  // }
 
   async updateAddress(
     addressId: string,
@@ -121,7 +95,7 @@ export class SubjectsService {
 
     // Loop through each key/value-pair in titles/subTitles[].
     for (const [title, subTitles] of allTitles) {
-      // Create an items array to hold all items for one HealthCondition.
+      // Create a new items array on each loop to hold all items for one HealthCondition.
       const allItems: HealthConditionItem[] = [];
       // Loop through each subTitle
       for (const subTitle of subTitles) {

@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { SubjectsService } from '../subjects/subjects.service';
+import { SubjectsService } from '../services/use-cases/subjects/subjects.service';
 import {
   CreateSubjectDto,
   HealthConditionItem,
