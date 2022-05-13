@@ -14,7 +14,10 @@ export class HealthCondition {
   title: string;
 
   @Prop([
-    { type: mongoose.Schema.Types.ObjectId, ref: HealthConditionItem.name },
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: HealthConditionItem.name,
+    },
   ])
   @Type(() => HealthConditionItem)
   healthConditionItems: HealthConditionItem[];

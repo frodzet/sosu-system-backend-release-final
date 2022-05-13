@@ -27,7 +27,12 @@ export class Subject {
   @Type(() => Address)
   address: Address;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: HealthCondition.name }])
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: HealthCondition.name,
+    },
+  ])
   @Type(() => HealthCondition)
   healthConditions: HealthCondition[];
 }

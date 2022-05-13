@@ -34,65 +34,6 @@ export class SubjectsService {
         postCode: createSubjectDto.address.postCode,
       },
       healthConditions: await this.createHealthCondition(),
-      // healthConditions:
-      //   await this.dataServices._healthConditionDocumentModel.create([
-      //     {
-      //       _id: mongoose.Types.ObjectId(),
-      //       title: Titles.FUNCTION_LEVEL,
-      //       healthConditionItems:
-      //         await this.dataServices._healthConditionItemDocumentModel.create([
-      //           {
-      //             _id: mongoose.Types.ObjectId(),
-      //             subTitle: SubTitles.PROBLEMS_WITH_PERSONAL_CARE,
-      //             description: '',
-      //             reason: '',
-      //             relevant: null,
-      //           },
-      //           {
-      //             _id: mongoose.Types.ObjectId(),
-      //             subTitle: SubTitles.PROBLEMS_WITH_DAILY_ACTIVITIES,
-      //             description: '',
-      //             reason: '',
-      //             relevant: null,
-      //           },
-      //         ]),
-      //     },
-      //     {
-      //       _id: mongoose.Types.ObjectId(),
-      //       title: Titles.MUSCULOSKELETAL_SYSTEM,
-      //       healthConditionItems:
-      //         await this.dataServices._healthConditionItemDocumentModel.create([
-      //           {
-      //             _id: mongoose.Types.ObjectId(),
-      //             subTitle: 'Problemer med mobilitet og bevægelse',
-      //             description: '',
-      //             reason: '',
-      //             relevant: null,
-      //           },
-      //         ]),
-      //     },
-      //     {
-      //       _id: mongoose.Types.ObjectId(),
-      //       title: Titles.NUTRITION,
-      //       healthConditionItems:
-      //         await this.dataServices._healthConditionItemDocumentModel.create([
-      //           {
-      //             _id: mongoose.Types.ObjectId(),
-      //             subTitle: 'Problemer med væskeindtag',
-      //             description: '',
-      //             reason: '',
-      //             relevant: null,
-      //           },
-      //           {
-      //             _id: mongoose.Types.ObjectId(),
-      //             subTitle: 'Problemer med fødeindtag',
-      //             description: '',
-      //             reason: '',
-      //             relevant: null,
-      //           },
-      //         ]),
-      //     },
-      //   ]),
     });
 
     const newSubject = await this.dataServices._subjectDocumentModel.create(
@@ -209,4 +150,65 @@ export class SubjectsService {
 
     return allHealthConditions;
   }
+
+  /* JSON-Reference */
+  // healthConditions:
+  //   await this.dataServices._healthConditionDocumentModel.create([
+  //     {
+  //       _id: mongoose.Types.ObjectId(),
+  //       title: Titles.FUNCTION_LEVEL,
+  //       healthConditionItems:
+  //         await this.dataServices._healthConditionItemDocumentModel.create([
+  //           {
+  //             _id: mongoose.Types.ObjectId(),
+  //             subTitle: SubTitles.PROBLEMS_WITH_PERSONAL_CARE,
+  //             description: '',
+  //             reason: '',
+  //             relevant: null,
+  //           },
+  //           {
+  //             _id: mongoose.Types.ObjectId(),
+  //             subTitle: SubTitles.PROBLEMS_WITH_DAILY_ACTIVITIES,
+  //             description: '',
+  //             reason: '',
+  //             relevant: null,
+  //           },
+  //         ]),
+  //     },
+  //     {
+  //       _id: mongoose.Types.ObjectId(),
+  //       title: Titles.MUSCULOSKELETAL_SYSTEM,
+  //       healthConditionItems:
+  //         await this.dataServices._healthConditionItemDocumentModel.create([
+  //           {
+  //             _id: mongoose.Types.ObjectId(),
+  //             subTitle: 'Problemer med mobilitet og bevægelse',
+  //             description: '',
+  //             reason: '',
+  //             relevant: null,
+  //           },
+  //         ]),
+  //     },
+  //     {
+  //       _id: mongoose.Types.ObjectId(),
+  //       title: Titles.NUTRITION,
+  //       healthConditionItems:
+  //         await this.dataServices._healthConditionItemDocumentModel.create([
+  //           {
+  //             _id: mongoose.Types.ObjectId(),
+  //             subTitle: 'Problemer med væskeindtag',
+  //             description: '',
+  //             reason: '',
+  //             relevant: null,
+  //           },
+  //           {
+  //             _id: mongoose.Types.ObjectId(),
+  //             subTitle: 'Problemer med fødeindtag',
+  //             description: '',
+  //             reason: '',
+  //             relevant: null,
+  //           },
+  //         ]),
+  //     },
+  //   ]),
 }
