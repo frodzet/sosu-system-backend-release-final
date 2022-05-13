@@ -111,7 +111,10 @@ export class SubjectsService {
     const allSubjects = this.dataServices._subjectDocumentModel
       .find()
       .populate('address')
-      .populate('healthConditions');
+      .populate({
+        path: 'healthConditions',
+        populate: { path: 'healthConditionItems' },
+      });
 
     return allSubjects;
   }
@@ -124,36 +127,6 @@ export class SubjectsService {
         path: 'healthConditions',
         populate: { path: 'healthConditionItems' },
       });
-  }
-
-  /** Generates all basic health-conditions */
-  async createHealthCondition(): Promise<HealthCondition[]> {
-    const allTitles = this.titlesGenerator.getTitles();
-    const allHealthConditions: HealthCondition[] = [];
-    const allItems: HealthConditionItem[] = [];
-
-    for (const [key, values] of allTitles) {
-      for (const v of values) {
-        const item =
-          await this.dataServices._healthConditionItemDocumentModel.create({
-            _id: mongoose.Types.ObjectId(),
-            subTitle: v,
-            description: '',
-            reason: '',
-            relevant: null,
-          });
-        allItems.push(item);
-      }
-      const healthCondition =
-        await this.dataServices._healthConditionDocumentModel.create({
-          _id: mongoose.Types.ObjectId(),
-          title: key,
-          healthConditionItems: allItems,
-        });
-      allHealthConditions.push(healthCondition);
-    }
-
-    return allHealthConditions;
   }
 
   // findOne(id: number) {
@@ -197,5 +170,43 @@ export class SubjectsService {
       updateItemDto,
       { new: true },
     );
+  }
+
+  /* Helper Methods */
+  /** Generates all basic health-conditions */
+  async createHealthCondition(): Promise<HealthCondition[]> {
+    const allTitles = this.titlesGenerator.getTitles();
+    const allHealthConditions: HealthCondition[] = [];
+
+    // Loop through each key/value-pair in titles/subTitles[].
+    for (const [title, subTitles] of allTitles) {
+      // Create an items array to hold all items for one HealthCondition.
+      const allItems: HealthConditionItem[] = [];
+      // Loop through each subTitle
+      for (const subTitle of subTitles) {
+        // Generate an item for each subTitle
+        const item =
+          await this.dataServices._healthConditionItemDocumentModel.create({
+            _id: mongoose.Types.ObjectId(),
+            subTitle: subTitle,
+            description: '',
+            reason: '',
+            relevant: null,
+          });
+        // Add each item to allItems
+        allItems.push(item);
+      }
+      // Create a new health condition
+      const healthCondition =
+        await this.dataServices._healthConditionDocumentModel.create({
+          _id: mongoose.Types.ObjectId(),
+          title: title,
+          healthConditionItems: allItems,
+        });
+      // Add the health condition to list of HealthCondition (allHealthConditions)
+      allHealthConditions.push(healthCondition);
+    }
+
+    return allHealthConditions;
   }
 }

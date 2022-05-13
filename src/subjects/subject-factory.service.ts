@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSubjectDto, UpdateSubjectDto } from '../core';
+import {
+  CreateSubjectDto,
+  HealthCondition,
+  HealthConditionItem,
+  UpdateSubjectDto,
+} from '../core';
+import mongoose from 'mongoose';
 @Injectable()
 export class SubjectFactoryService {
   createNewSubject(createSubjectDto: CreateSubjectDto) {
