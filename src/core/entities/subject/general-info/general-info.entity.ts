@@ -1,6 +1,7 @@
-import { HealthConditionItem } from './health-condition-item.entity';
-
-export class HealthCondition {
+export class GeneralInfo {
   title: string;
-  healthConditionItems: HealthConditionItem[];
+
+  description: string;
+
+  comment: string;
 }

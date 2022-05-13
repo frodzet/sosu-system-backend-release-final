@@ -1,11 +1,11 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateHealthConditionItemDto } from './health-condition-item.dto';
 
-export class CreateHealthConditionDto {
+export class CreateGeneralInfoDto {
   title: string;
-  healthConditionItems: CreateHealthConditionItemDto[];
+
+  description: string;
+
+  comment: string;
 }
 
-export class UpdateHealthConditionDto extends PartialType(
-  CreateHealthConditionDto,
-) {}
+export class UpdateGeneralInfoDto extends PartialType(CreateGeneralInfoDto) {}

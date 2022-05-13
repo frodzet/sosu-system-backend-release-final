@@ -58,8 +58,8 @@ export class SubjectsController {
     return this.subjectsService.updateItem(subjectId, itemId, updateItemDto);
   }
   //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.subjectsService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.subjectsService.remove(id);
+  }
 }

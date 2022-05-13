@@ -3,6 +3,7 @@ import { Transform, Type } from 'class-transformer';
 import * as mongoose from 'mongoose';
 import { Address, AddressSchema } from './address.schema';
 import { HealthCondition } from './health-condition/health-condition.schema';
+import { GeneralInfo } from './general-info/general-info.schema';
 
 export type SubjectDocument = Subject & Document;
 
@@ -26,6 +27,10 @@ export class Subject {
   @Prop({ type: AddressSchema })
   @Type(() => Address)
   address: Address;
+
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: GeneralInfo.name }])
+  @Type(() => GeneralInfo)
+  generalInformation: GeneralInfo[];
 
   @Prop([
     {

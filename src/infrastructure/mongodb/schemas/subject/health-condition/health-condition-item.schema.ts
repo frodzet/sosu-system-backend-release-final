@@ -9,7 +9,7 @@ export class HealthConditionItem {
   @Transform(({ value }) => value.toString())
   _id: mongoose.Schema.Types.ObjectId;
 
-  @Prop()
+  @Prop({ immutable: true })
   subTitle: string;
 
   @Prop()

@@ -1,4 +1,4 @@
-export enum Titles {
+export enum HealthConditionTitles {
   FUNCTION_LEVEL = 'Funktionsniveau',
   MUSCULOSKELETAL_SYSTEM = 'Bevægeapparatet',
   NUTRITION = 'Ernæring',
@@ -13,7 +13,7 @@ export enum Titles {
   EXCRETION_OF_WASTE_MATERIALS = 'Udskillelse af affaldsstoffer',
 }
 
-export enum SubTitles {
+export enum HealthConditionSubTitles {
   /*FUNCTION_LEVEL*/
   PROBLEMS_WITH_PERSONAL_CARE = 'Problemer med personlig pleje',
   PROBLEMS_WITH_DAILY_ACTIVITIES = 'Problemer med daglige aktiviteter',

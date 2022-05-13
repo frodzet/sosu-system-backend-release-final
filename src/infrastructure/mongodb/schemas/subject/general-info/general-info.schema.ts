@@ -1,27 +1,54 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform, Type } from 'class-transformer';
 import * as mongoose from 'mongoose';
-import { HealthConditionItem } from './health-condition-item.schema';
-
-export type HealthConditionDocument = HealthCondition & Document;
+export type GeneralInfoDocument = GeneralInfo & Document;
 
 @Schema()
-export class HealthCondition {
+export class GeneralInfo {
   @Transform(({ value }) => value.toString())
   _id: mongoose.Schema.Types.ObjectId;
 
   @Prop({ immutable: true })
   title: string;
 
-  @Prop([
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: HealthConditionItem.name,
-    },
-  ])
-  @Type(() => HealthConditionItem)
-  healthConditionItems: HealthConditionItem[];
+  @Prop({ immutable: true })
+  description: string;
+
+  @Prop()
+  comment: string;
+
+  // @Prop()
+  // mastering: string;
+  //
+  // @Prop()
+  // motivation: string;
+  //
+  // @Prop()
+  // resources: string;
+  //
+  // @Prop()
+  // roles: string;
+  //
+  // @Prop()
+  // habits: string;
+  //
+  // @Prop()
+  // educationOrJob: string;
+  //
+  // @Prop()
+  // lifeStory: string;
+  //
+  // @Prop()
+  // healthConditionInformation: string;
+  //
+  // @Prop()
+  // devices: string;
+  //
+  // @Prop()
+  // homeInterior: string;
+  //
+  // @Prop()
+  // socialCircle: string;
 }
 
-export const HealthConditionSchema =
-  SchemaFactory.createForClass(HealthCondition);
+export const GeneralInfoSchema = SchemaFactory.createForClass(GeneralInfo);

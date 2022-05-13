@@ -12,12 +12,17 @@ import {
   HealthConditionItemSchema,
 } from './schemas/subject';
 import { MongoDataServices } from './mongo-data-services.service';
+import {
+  GeneralInfo,
+  GeneralInfoSchema,
+} from './schemas/subject/general-info/general-info.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Subject.name, schema: SubjectSchema },
       { name: Address.name, schema: AddressSchema },
+      { name: GeneralInfo.name, schema: GeneralInfoSchema },
       { name: HealthCondition.name, schema: HealthConditionSchema },
       { name: HealthConditionItem.name, schema: HealthConditionItemSchema },
     ]),
