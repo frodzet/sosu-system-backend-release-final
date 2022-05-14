@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 import { Address, AddressSchema } from './address.schema';
 import { HealthCondition } from './health-condition/health-condition.schema';
 import { GeneralInfo } from './general-info/general-info.schema';
-import { FunctionAbility } from '../../../../core/entities/subject/function-ability/function-ability.entity';
+import { FunctionAbility } from './function-ability/function-ability.schema';
 
 export type SubjectDocument = Subject & Document;
 

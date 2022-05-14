@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
 import {
   Subject,
   CreateSubjectDto,
@@ -38,23 +39,34 @@ export class SubjectsService {
   ) {}
 
   async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
+    // const subject = new Subject();
+    // subject.firstName = createSubjectDto.firstName;
+    // subject.lastName = createSubjectDto.lastName;
+    // subject.email = createSubjectDto.email;
+    // subject.phone = createSubjectDto.phone;
+    // subject.address = createSubjectDto.address;
+    // subject.generalInformation = await this.createGeneralInformation();
+    // subject.healthConditions = await this.createHealthConditions();
+    // subject.functionAbilities = await this.createFunctionAbilities();
+
+    // const newSubject = await this.dataServices._subjectDocumentModel.create(
+    //   subject,
+    // );
+
     const newSubject = await this.dataServices._subjectDocumentModel.create({
       firstName: createSubjectDto.firstName,
       lastName: createSubjectDto.lastName,
       email: createSubjectDto.email,
       phone: createSubjectDto.phone,
-      address: {
-        city: createSubjectDto.address.city,
-        street: createSubjectDto.address.street,
-        postCode: createSubjectDto.address.postCode,
-      },
+      address: createSubjectDto.address,
       // We kinda skip the DTO's for this part - we just need to make sure that we manually set a new random-ID. These
       // are just auto-filled items that should be the exact same for each new subject created. Updating arrays inside
       // arrays are tedious and time-consuming.
-      functionAbilities: await this.createFunctionAbilities(),
       generalInformation: await this.createGeneralInformation(),
       healthConditions: await this.createHealthConditions(),
+      functionAbilities: await this.createFunctionAbilities(),
     });
+
     await newSubject.populate('address'); // Consider setting up 'mongoose-autopopulate'
     await newSubject.populate('generalInformation');
     await newSubject.populate({
@@ -65,6 +77,8 @@ export class SubjectsService {
       path: 'functionAbilities',
       populate: { path: 'functionAbilityItems' },
     });
+    await newSubject.populate('address');
+    await newSubject.populate('generalInformation');
 
     console.log(await this.dataServices._subjectDocumentModel.db.db.stats());
     console.log(
@@ -297,4 +311,9 @@ export class SubjectsService {
   //         ]),
   //     },
   //   ]),
+  async getItem(id: string, itemId: string): Promise<HealthConditionItem> {
+    return this.dataServices._healthConditionItemDocumentModel.findOne({
+      _id: itemId,
+    });
+  }
 }

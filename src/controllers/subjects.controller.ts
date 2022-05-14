@@ -62,4 +62,9 @@ export class SubjectsController {
   remove(@Param('id') id: string) {
     return this.subjectsService.remove(id);
   }
+
+  @Get(':id/items/:itemId')
+  getItem(@Param('id') id: string, @Param('itemId') itemId: string) {
+    return this.subjectsService.getItem(id, itemId);
+  }
 }
