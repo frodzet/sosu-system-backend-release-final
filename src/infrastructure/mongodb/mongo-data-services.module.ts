@@ -6,16 +6,18 @@ import {
   SubjectSchema,
   Address,
   AddressSchema,
+  GeneralInfo,
+  GeneralInfoSchema,
   HealthCondition,
   HealthConditionSchema,
   HealthConditionItem,
   HealthConditionItemSchema,
+  FunctionAbility,
+  FunctionAbilitySchema,
+  FunctionAbilityItem,
+  FunctionAbilityItemSchema,
 } from './schemas/subject';
 import { MongoDataServices } from './mongo-data-services.service';
-import {
-  GeneralInfo,
-  GeneralInfoSchema,
-} from './schemas/subject/general-info/general-info.schema';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import {
       { name: GeneralInfo.name, schema: GeneralInfoSchema },
       { name: HealthCondition.name, schema: HealthConditionSchema },
       { name: HealthConditionItem.name, schema: HealthConditionItemSchema },
+      { name: FunctionAbility.name, schema: FunctionAbilitySchema },
+      { name: FunctionAbilityItem.name, schema: FunctionAbilityItemSchema },
     ]),
     MongooseModule.forRoot(Configuration.urlKEY),
   ],

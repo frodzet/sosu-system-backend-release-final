@@ -4,6 +4,7 @@ import * as mongoose from 'mongoose';
 import { Address, AddressSchema } from './address.schema';
 import { HealthCondition } from './health-condition/health-condition.schema';
 import { GeneralInfo } from './general-info/general-info.schema';
+import { FunctionAbility } from '../../../../core/entities/subject/function-ability/function-ability.entity';
 
 export type SubjectDocument = Subject & Document;
 
@@ -40,6 +41,10 @@ export class Subject {
   ])
   @Type(() => HealthCondition)
   healthConditions: HealthCondition[];
+
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: FunctionAbility.name }])
+  @Type(() => FunctionAbility)
+  functionAbilities: FunctionAbility[];
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);

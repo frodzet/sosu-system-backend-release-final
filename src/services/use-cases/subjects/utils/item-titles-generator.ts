@@ -6,11 +6,16 @@ import {
   GeneralInfoDescriptions,
   GeneralInfoTitles,
 } from './enums/general-information-titles.enums';
+import {
+  FunctionAbilitySubTitles,
+  FunctionAbilityTitles,
+} from './enums/function-ability-titles.enums';
 
 export class TitlesGenerator {
   constructor() {
     this.generateGeneralInfoTitles();
     this.generateHealthConditionTitles();
+    this.generateFunctionAbilityTitles();
   }
 
   generateHealthConditionTitles(): Map<string, Array<string>> {
@@ -147,6 +152,57 @@ export class TitlesGenerator {
       GeneralInfoTitles.HOME_INTERIOR_DESIGN,
       GeneralInfoDescriptions.HOME_INTERIOR_DESIGN_DESCRIPTION,
     );
+
+    return titlesMap;
+  }
+
+  generateFunctionAbilityTitles(): Map<string, Array<string>> {
+    const titlesMap = new Map<string, Array<string>>();
+
+    titlesMap.set(FunctionAbilityTitles.SELF_CARE, [
+      FunctionAbilitySubTitles.SELF_CARE_BATHING,
+      FunctionAbilitySubTitles.SELF_CARE_BODY_CARE,
+      FunctionAbilitySubTitles.SELF_CARE_UNDRESSING_AND_DRESSING,
+      FunctionAbilitySubTitles.SELF_CARE_DRINKING,
+      FunctionAbilitySubTitles.SELF_CARE_EATING,
+      FunctionAbilitySubTitles.SELF_CARE_FOOD_INTAKE,
+      FunctionAbilitySubTitles.SELF_CARE_HEALTH_CARE,
+      FunctionAbilitySubTitles.SELF_CARE_TOILET,
+    ]);
+
+    titlesMap.set(FunctionAbilityTitles.PRACTICAL_TASKS, [
+      FunctionAbilitySubTitles.PRACTICAL_TASKS_HOUSEWORK,
+      FunctionAbilitySubTitles.PRACTICAL_TASKS_COOKING,
+      FunctionAbilitySubTitles.PRACTICAL_TASKS_DAILY_ROUTINES,
+      FunctionAbilitySubTitles.PRACTICAL_TASKS_GETTING_GROCERIES_AND_SERVICES,
+    ]);
+
+    titlesMap.set(FunctionAbilityTitles.MOBILITY, [
+      FunctionAbilitySubTitles.MOBILITY_LIFT_AND_CARRYING,
+      FunctionAbilitySubTitles.MOBILITY_MOVE_AROUND,
+      FunctionAbilitySubTitles.MOBILITY_USE_OF_TRANSPORTATION,
+      FunctionAbilitySubTitles.MOBILITY_MOVEMENT_IN_DIFFERENT_ENVIRONMENTS,
+      FunctionAbilitySubTitles.MOBILITY_TO_MOVE,
+      FunctionAbilitySubTitles.MOBILITY_CHANGE_BODY_POSITION,
+      FunctionAbilitySubTitles.MOBILITY_STRENGTH,
+      FunctionAbilitySubTitles.MOBILITY_WALK,
+      FunctionAbilitySubTitles.MOBILITY_ENDURANCE,
+    ]);
+
+    titlesMap.set(FunctionAbilityTitles.MENTAL_FUNCTIONS, [
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_USE_OF_COMMUNICATION_DEVICES,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_MEMORY,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_ORIENTATION,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_COGNITIVE_FUNCTIONS,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_EMOTIONAL_FUNCTIONS,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_ENERGY_AND_POWER_OF_ACTION,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_LEARN_NEW_SKILLS,
+      FunctionAbilitySubTitles.MENTAL_FUNCTIONS_PROBLEM_SOLVING,
+    ]);
+
+    titlesMap.set(FunctionAbilityTitles.SOCIETY, [
+      FunctionAbilitySubTitles.SOCIETY_JOB,
+    ]);
 
     return titlesMap;
   }

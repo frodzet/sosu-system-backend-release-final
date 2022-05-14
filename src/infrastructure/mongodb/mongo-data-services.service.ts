@@ -10,11 +10,12 @@ import {
   HealthConditionDocument,
   HealthConditionItem,
   HealthConditionItemDocument,
-} from './schemas/subject';
-import {
-  GeneralInfo,
   GeneralInfoDocument,
-} from './schemas/subject/general-info/general-info.schema';
+  FunctionAbilityDocument,
+  FunctionAbilityItem,
+  GeneralInfo,
+  FunctionAbility,
+} from './schemas/subject';
 
 @Injectable()
 export class MongoDataServices implements OnApplicationBootstrap {
@@ -23,6 +24,8 @@ export class MongoDataServices implements OnApplicationBootstrap {
   _generalInfoDocumentModel: Model<GeneralInfoDocument>;
   _healthConditionDocumentModel: Model<HealthConditionDocument>;
   _healthConditionItemDocumentModel: Model<HealthConditionItemDocument>;
+  _functionAbilityDocumentModel: Model<FunctionAbilityDocument>;
+  _functionAbilityItemDocumentModel: Model<FunctionAbilityItem>;
 
   constructor(
     @InjectModel(Subject.name)
@@ -35,10 +38,16 @@ export class MongoDataServices implements OnApplicationBootstrap {
     private healthConditionDocumentModel: Model<HealthConditionDocument>,
     @InjectModel(HealthConditionItem.name)
     private healthConditionItemDocumentModel: Model<HealthConditionItemDocument>,
+    @InjectModel(FunctionAbility.name)
+    private functionAbilityDocumentModel: Model<FunctionAbilityDocument>,
+    @InjectModel(FunctionAbilityItem.name)
+    private functionAbilityItemDocumentModel: Model<FunctionAbilityItem>,
   ) {
     this.subjectDocumentModel.db.db
       .dropDatabase()
       .then((r) => console.log('database dropped'));
+
+    // DB-Collection Size Test
   }
 
   onApplicationBootstrap() {
@@ -48,5 +57,8 @@ export class MongoDataServices implements OnApplicationBootstrap {
     this._healthConditionDocumentModel = this.healthConditionDocumentModel;
     this._healthConditionItemDocumentModel =
       this.healthConditionItemDocumentModel;
+    this._functionAbilityDocumentModel = this.functionAbilityDocumentModel;
+    this._functionAbilityItemDocumentModel =
+      this.functionAbilityItemDocumentModel;
   }
 }

@@ -16,39 +16,6 @@ export class GeneralInfo {
 
   @Prop()
   comment: string;
-
-  // @Prop()
-  // mastering: string;
-  //
-  // @Prop()
-  // motivation: string;
-  //
-  // @Prop()
-  // resources: string;
-  //
-  // @Prop()
-  // roles: string;
-  //
-  // @Prop()
-  // habits: string;
-  //
-  // @Prop()
-  // educationOrJob: string;
-  //
-  // @Prop()
-  // lifeStory: string;
-  //
-  // @Prop()
-  // healthConditionInformation: string;
-  //
-  // @Prop()
-  // devices: string;
-  //
-  // @Prop()
-  // homeInterior: string;
-  //
-  // @Prop()
-  // socialCircle: string;
 }
 
 export const GeneralInfoSchema = SchemaFactory.createForClass(GeneralInfo);

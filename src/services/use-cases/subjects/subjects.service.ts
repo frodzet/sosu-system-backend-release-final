@@ -1,20 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import {
-  Address,
-  CreateSubjectDto,
-  HealthCondition,
-  HealthConditionItem,
   Subject,
+  CreateSubjectDto,
+  UpdateSubjectDto,
+  Address,
+  CreateAddressDto,
   UpdateAddressDto,
+  GeneralInfo,
+  CreateGeneralInfoDto,
+  UpdateGeneralInfoDto,
+  HealthCondition,
+  CreateHealthConditionDto,
+  UpdateHealthConditionDto,
+  HealthConditionItem,
+  CreateHealthConditionItemDto,
   UpdateHealthConditionItemDto,
+  FunctionAbility,
+  CreateFunctionAbilityDto,
+  UpdateFunctionAbilityDto,
+  FunctionAbilityItem,
+  CreateFunctionAbilityItemDto,
+  UpdateFunctionAbilityItemDto,
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
-import { GeneralInfo } from '../../../core/entities/subject/general-info/general-info.entity';
 
 const mongoose = require('mongoose');
 /*
  * To-Do: Setup FactoryService for DTO's.
+ * Add an interface - maybe a generic one which can be used across services.
  */
 @Injectable()
 export class SubjectsService {
@@ -37,8 +51,9 @@ export class SubjectsService {
       // We kinda skip the DTO's for this part - we just need to make sure that we manually set a new random-ID. These
       // are just auto-filled items that should be the exact same for each new subject created. Updating arrays inside
       // arrays are tedious and time-consuming.
+      functionAbilities: await this.createFunctionAbilities(),
       generalInformation: await this.createGeneralInformation(),
-      healthConditions: await this.createHealthCondition(),
+      healthConditions: await this.createHealthConditions(),
     });
     await newSubject.populate('address'); // Consider setting up 'mongoose-autopopulate'
     await newSubject.populate('generalInformation');
@@ -46,7 +61,17 @@ export class SubjectsService {
       path: 'healthConditions',
       populate: { path: 'healthConditionItems' },
     });
+    await newSubject.populate({
+      path: 'functionAbilities',
+      populate: { path: 'functionAbilityItems' },
+    });
 
+    console.log(await this.dataServices._subjectDocumentModel.db.db.stats());
+    console.log(
+      await this.dataServices._subjectDocumentModel.db
+        .collection('subjects')
+        .stats(),
+    );
     return newSubject;
   }
 
@@ -58,6 +83,10 @@ export class SubjectsService {
       .populate({
         path: 'healthConditions',
         populate: { path: 'healthConditionItems' },
+      })
+      .populate({
+        path: 'functionAbilities',
+        populate: { path: 'functionAbilityItems' },
       });
   }
 
@@ -69,6 +98,10 @@ export class SubjectsService {
       .populate({
         path: 'healthConditions',
         populate: { path: 'healthConditionItems' },
+      })
+      .populate({
+        path: 'functionAbilities',
+        populate: { path: 'functionAbilityItems' },
       });
   }
 
@@ -129,7 +162,7 @@ export class SubjectsService {
     return allGeneralInformation;
   }
 
-  async createHealthCondition(): Promise<HealthCondition[]> {
+  async createHealthConditions(): Promise<HealthCondition[]> {
     const allTitles = this.titlesGenerator.generateHealthConditionTitles();
     const allHealthConditions: HealthCondition[] = [];
 
@@ -163,6 +196,45 @@ export class SubjectsService {
     }
 
     return allHealthConditions;
+  }
+
+  async createFunctionAbilities(): Promise<FunctionAbility[]> {
+    const allTitles = this.titlesGenerator.generateFunctionAbilityTitles();
+    const allFunctionAbilities: FunctionAbility[] = [];
+
+    // Loop through each key/value-pair in titles/subTitles[].
+    for (const [title, subTitles] of allTitles) {
+      // Create a new items array on each loop to hold all items for one FunctionAbility.
+      const allItems: FunctionAbilityItem[] = [];
+      // Loop through each subTitle
+      for (const subTitle of subTitles) {
+        // Generate an item for each subTitle
+        const item =
+          await this.dataServices._functionAbilityItemDocumentModel.create({
+            _id: mongoose.Types.ObjectId(),
+            subTitle: subTitle,
+            currentLevel: null,
+            expectedLevel: null,
+            execution: '',
+            meaningOfExecution: '',
+            subjectWish: '',
+            note: '',
+          });
+        // Add each item to allItems
+        allItems.push(item);
+      }
+      // Create a new health condition
+      const functionAbility =
+        await this.dataServices._functionAbilityDocumentModel.create({
+          _id: mongoose.Types.ObjectId(),
+          title: title,
+          functionAbilityItems: allItems,
+        });
+      // Add the health condition to list of HealthCondition (allHealthConditions)
+      allFunctionAbilities.push(functionAbility);
+    }
+
+    return allFunctionAbilities;
   }
 
   /* JSON-Reference */
