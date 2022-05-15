@@ -7,6 +7,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { LocalAuthGuard } from '../../authentication/local-auth.guard';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { AuthenticationModule } from '../../authentication/authentication.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from '../../authentication/jwt-constants';
 
 @Module({
   imports: [MongoDataServicesModule, AuthenticationModule],

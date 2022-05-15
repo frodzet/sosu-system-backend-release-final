@@ -15,10 +15,7 @@ import {
   Subject,
   UpdateAddressDto,
   UpdateHealthConditionItemDto,
-  UpdateSubjectDto,
 } from '../core';
-import { LocalAuthGuard } from '../services/authentication/local-auth.guard';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('subjects')
 export class SubjectsController {
