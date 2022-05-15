@@ -9,10 +9,10 @@ export class User {
   @Transform(({ value }) => value.toString())
   _id: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, required: true })
   userName: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 }
 

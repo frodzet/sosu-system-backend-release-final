@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { SubjectsService } from '../services/use-cases/subjects/subjects.service';
 import {
@@ -16,6 +17,8 @@ import {
   UpdateHealthConditionItemDto,
   UpdateSubjectDto,
 } from '../core';
+import { LocalAuthGuard } from '../services/authentication/local-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('subjects')
 export class SubjectsController {
