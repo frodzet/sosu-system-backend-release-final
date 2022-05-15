@@ -15,10 +15,12 @@ import {
   FunctionAbilityItem,
   GeneralInfo,
   FunctionAbility,
-} from './schemas/subject';
+} from './schemas';
+import { User, UserDocument } from './schemas/users/user.schema';
 
 @Injectable()
 export class MongoDataServices implements OnApplicationBootstrap {
+  _userDocumentModel: Model<UserDocument>;
   _subjectDocumentModel: Model<SubjectDocument>;
   _addressDocumentModel: Model<AddressDocument>;
   _generalInfoDocumentModel: Model<GeneralInfoDocument>;
@@ -28,6 +30,8 @@ export class MongoDataServices implements OnApplicationBootstrap {
   _functionAbilityItemDocumentModel: Model<FunctionAbilityItem>;
 
   constructor(
+    @InjectModel(User.name)
+    private userDocumentModel: Model<UserDocument>,
     @InjectModel(Subject.name)
     private subjectDocumentModel: Model<SubjectDocument>,
     @InjectModel(Address.name)
@@ -51,6 +55,7 @@ export class MongoDataServices implements OnApplicationBootstrap {
   }
 
   onApplicationBootstrap() {
+    this._userDocumentModel = this.userDocumentModel;
     this._subjectDocumentModel = this.subjectDocumentModel;
     this._addressDocumentModel = this.addressDocumentModel;
     this._generalInfoDocumentModel = this.generalInfoDocumentModel;

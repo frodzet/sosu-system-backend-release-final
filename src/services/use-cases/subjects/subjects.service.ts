@@ -141,7 +141,7 @@ export class SubjectsService {
         _id: mongoose.Types.ObjectId(),
         title: title,
         description: description,
-        comment: '',
+        comment: null,
       });
       // add the newly created item to a list of generalInformation
       allGeneralInformation.push(item);
@@ -165,8 +165,8 @@ export class SubjectsService {
           await this.dataServices._healthConditionItemDocumentModel.create({
             _id: mongoose.Types.ObjectId(),
             subTitle: subTitle,
-            description: '',
-            reason: '',
+            description: null,
+            reason: null,
             relevant: null,
           });
         // Add each item to allItems
@@ -203,10 +203,10 @@ export class SubjectsService {
             subTitle: subTitle,
             currentLevel: null,
             expectedLevel: null,
-            execution: '',
-            meaningOfExecution: '',
-            subjectWish: '',
-            note: '',
+            execution: null,
+            meaningOfExecution: null,
+            subjectWish: null,
+            note: null,
           });
         // Add each item to allItems
         allItems.push(item);

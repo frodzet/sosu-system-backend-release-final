@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { SubjectsModule } from './services/use-cases/subjects/subjects.module';
-import { MongoDataServicesModule } from './infrastructure/mongodb/mongo-data-services.module';
+import { AuthenticationModule } from './services/authentication/authentication.module';
 
 @Module({
-  imports: [MongoDataServicesModule, SubjectsModule],
+  imports: [SubjectsModule, AuthenticationModule],
   controllers: [],
   providers: [],
 })

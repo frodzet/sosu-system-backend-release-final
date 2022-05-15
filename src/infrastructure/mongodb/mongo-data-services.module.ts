@@ -16,12 +16,15 @@ import {
   FunctionAbilitySchema,
   FunctionAbilityItem,
   FunctionAbilityItemSchema,
-} from './schemas/subject';
+  UserSchema,
+  User,
+} from './schemas';
 import { MongoDataServices } from './mongo-data-services.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
       { name: Subject.name, schema: SubjectSchema },
       { name: Address.name, schema: AddressSchema },
       { name: GeneralInfo.name, schema: GeneralInfoSchema },
