@@ -5,6 +5,7 @@ import { Address, AddressSchema } from './address.schema';
 import { HealthCondition } from './health-condition/health-condition.schema';
 import { GeneralInfo } from './general-info/general-info.schema';
 import { FunctionAbility } from './function-ability/function-ability.schema';
+import { Note } from './note.schema';
 
 export type SubjectDocument = Subject & Document;
 
@@ -45,6 +46,10 @@ export class Subject {
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: FunctionAbility.name }])
   @Type(() => FunctionAbility)
   functionAbilities: FunctionAbility[];
+
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Note.name }])
+  @Type(() => Note)
+  notes: Note[];
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);

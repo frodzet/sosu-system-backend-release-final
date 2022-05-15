@@ -3,25 +3,14 @@ import { Model } from 'mongoose';
 import {
   Subject,
   CreateSubjectDto,
-  UpdateSubjectDto,
   Address,
-  CreateAddressDto,
   UpdateAddressDto,
   GeneralInfo,
-  CreateGeneralInfoDto,
-  UpdateGeneralInfoDto,
   HealthCondition,
-  CreateHealthConditionDto,
-  UpdateHealthConditionDto,
   HealthConditionItem,
-  CreateHealthConditionItemDto,
   UpdateHealthConditionItemDto,
   FunctionAbility,
-  CreateFunctionAbilityDto,
-  UpdateFunctionAbilityDto,
   FunctionAbilityItem,
-  CreateFunctionAbilityItemDto,
-  UpdateFunctionAbilityItemDto,
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
@@ -39,32 +28,16 @@ export class SubjectsService {
   ) {}
 
   async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    // const subject = new Subject();
-    // subject.firstName = createSubjectDto.firstName;
-    // subject.lastName = createSubjectDto.lastName;
-    // subject.email = createSubjectDto.email;
-    // subject.phone = createSubjectDto.phone;
-    // subject.address = createSubjectDto.address;
-    // subject.generalInformation = await this.createGeneralInformation();
-    // subject.healthConditions = await this.createHealthConditions();
-    // subject.functionAbilities = await this.createFunctionAbilities();
-
-    // const newSubject = await this.dataServices._subjectDocumentModel.create(
-    //   subject,
-    // );
-
     const newSubject = await this.dataServices._subjectDocumentModel.create({
       firstName: createSubjectDto.firstName,
       lastName: createSubjectDto.lastName,
       email: createSubjectDto.email,
       phone: createSubjectDto.phone,
       address: createSubjectDto.address,
-      // We kinda skip the DTO's for this part - we just need to make sure that we manually set a new random-ID. These
-      // are just auto-filled items that should be the exact same for each new subject created. Updating arrays inside
-      // arrays are tedious and time-consuming.
       generalInformation: await this.createGeneralInformation(),
       healthConditions: await this.createHealthConditions(),
       functionAbilities: await this.createFunctionAbilities(),
+      notes: createSubjectDto.notes,
     });
 
     await newSubject.populate('address'); // Consider setting up 'mongoose-autopopulate'
@@ -86,6 +59,7 @@ export class SubjectsService {
         .collection('subjects')
         .stats(),
     );
+
     return newSubject;
   }
 
