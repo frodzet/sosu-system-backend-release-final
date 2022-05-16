@@ -57,7 +57,7 @@ export class AuthenticationService {
   async getUser(loginDTO: LoginDto): Promise<User> {
     return await this.dataServices._userDocumentModel
       .findOne({
-        useName: loginDTO.userName,
+        userName: loginDTO.userName,
       })
       .exec();
   }
