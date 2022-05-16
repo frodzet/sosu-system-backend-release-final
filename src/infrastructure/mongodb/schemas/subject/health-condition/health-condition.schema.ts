@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform, Type } from 'class-transformer';
 import * as mongoose from 'mongoose';
 import { HealthConditionItem } from './health-condition-item.schema';
+import { SubjectSchema } from "../subject.schema";
 
 export type HealthConditionDocument = HealthCondition & Document;
 
@@ -17,6 +18,7 @@ export class HealthCondition {
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: HealthConditionItem.name,
+      autopopulate: true
     },
   ])
   @Type(() => HealthConditionItem)
@@ -25,3 +27,4 @@ export class HealthCondition {
 
 export const HealthConditionSchema =
   SchemaFactory.createForClass(HealthCondition);
+HealthConditionSchema.plugin(require('mongoose-autopopulate'));

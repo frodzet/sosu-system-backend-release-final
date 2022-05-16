@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform, Type } from 'class-transformer';
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
+import { Subject, SubjectSchema } from "../subject/subject.schema";
+const autopopulate = require('mongoose-autopopulate');
 
 export type UserDocument = User & Document;
 
@@ -14,6 +16,11 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop([{type: mongoose.Schema.Types.ObjectId, ref: Subject.name, autopopulate: true}])
+  @Type(() => Subject)
+  subjects: mongoose.Schema.Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.plugin(require('mongoose-autopopulate'));

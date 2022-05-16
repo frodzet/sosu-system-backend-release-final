@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform, Type } from 'class-transformer';
 import * as mongoose from 'mongoose';
 import { FunctionAbilityItem } from './function-ability-item.schema';
+import { SubjectSchema } from "../subject.schema";
 export type FunctionAbilityDocument = FunctionAbility & Document;
 
 @Schema()
@@ -13,7 +14,7 @@ export class FunctionAbility {
   title: string;
 
   @Prop([
-    { type: mongoose.Schema.Types.ObjectId, ref: FunctionAbilityItem.name },
+    { type: mongoose.Schema.Types.ObjectId, ref: FunctionAbilityItem.name, autopopulate: true },
   ])
   @Type(() => FunctionAbilityItem)
   functionAbilityItems: FunctionAbilityItem[];
@@ -21,3 +22,4 @@ export class FunctionAbility {
 
 export const FunctionAbilitySchema =
   SchemaFactory.createForClass(FunctionAbility);
+FunctionAbilitySchema.plugin(require('mongoose-autopopulate'));

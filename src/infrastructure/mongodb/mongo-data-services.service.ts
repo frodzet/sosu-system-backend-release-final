@@ -2,6 +2,8 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
+  User,
+  UserDocument,
   Subject,
   SubjectDocument,
   Address,
@@ -15,8 +17,9 @@ import {
   FunctionAbilityItem,
   GeneralInfo,
   FunctionAbility,
-} from './schemas';
-import { User, UserDocument } from './schemas/users/user.schema';
+  Note,
+} from "./schemas";
+
 
 @Injectable()
 export class MongoDataServices implements OnApplicationBootstrap {
@@ -28,6 +31,7 @@ export class MongoDataServices implements OnApplicationBootstrap {
   _healthConditionItemDocumentModel: Model<HealthConditionItemDocument>;
   _functionAbilityDocumentModel: Model<FunctionAbilityDocument>;
   _functionAbilityItemDocumentModel: Model<FunctionAbilityItem>;
+  _noteDocumentModel: Model<Note>;
 
   constructor(
     @InjectModel(User.name)
@@ -46,10 +50,12 @@ export class MongoDataServices implements OnApplicationBootstrap {
     private functionAbilityDocumentModel: Model<FunctionAbilityDocument>,
     @InjectModel(FunctionAbilityItem.name)
     private functionAbilityItemDocumentModel: Model<FunctionAbilityItem>,
+    @InjectModel(Note.name)
+    private noteDocumentModel: Model<Note>,
   ) {
-    this.subjectDocumentModel.db.db
-      .dropDatabase()
-      .then((r) => console.log('database dropped'));
+    // this.subjectDocumentModel.db.db
+    //   .dropDatabase()
+    //   .then((r) => console.log('database dropped'));
 
     // DB-Collection Size Test
   }
@@ -65,5 +71,6 @@ export class MongoDataServices implements OnApplicationBootstrap {
     this._functionAbilityDocumentModel = this.functionAbilityDocumentModel;
     this._functionAbilityItemDocumentModel =
       this.functionAbilityItemDocumentModel;
+    this._noteDocumentModel = this.noteDocumentModel;
   }
 }

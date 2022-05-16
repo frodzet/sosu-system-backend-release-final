@@ -17,8 +17,8 @@ import {
   FunctionAbilityItem,
   FunctionAbilityItemSchema,
   UserSchema,
-  User,
-} from './schemas';
+  User, NoteSchema, Note
+} from "./schemas";
 import { MongoDataServices } from './mongo-data-services.service';
 
 @Module({
@@ -32,6 +32,7 @@ import { MongoDataServices } from './mongo-data-services.service';
       { name: HealthConditionItem.name, schema: HealthConditionItemSchema },
       { name: FunctionAbility.name, schema: FunctionAbilitySchema },
       { name: FunctionAbilityItem.name, schema: FunctionAbilityItemSchema },
+      { name: Note.name, schema: NoteSchema },
     ]),
     MongooseModule.forRoot(Configuration.urlKEY),
   ],

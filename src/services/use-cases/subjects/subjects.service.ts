@@ -14,12 +14,8 @@ import {
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
-
 const mongoose = require('mongoose');
-/*
- * To-Do: Setup FactoryService for DTO's.
- * Add an interface - maybe a generic one which can be used across services.
- */
+
 @Injectable()
 export class SubjectsService {
   constructor(
@@ -40,18 +36,18 @@ export class SubjectsService {
       notes: createSubjectDto.notes,
     });
 
-    await newSubject.populate('address'); // Consider setting up 'mongoose-autopopulate'
-    await newSubject.populate('generalInformation');
-    await newSubject.populate({
-      path: 'healthConditions',
-      populate: { path: 'healthConditionItems' },
-    });
-    await newSubject.populate({
-      path: 'functionAbilities',
-      populate: { path: 'functionAbilityItems' },
-    });
-    await newSubject.populate('address');
-    await newSubject.populate('generalInformation');
+    // await newSubject.populate('address'); // Consider setting up 'mongoose-autopopulate'
+    // await newSubject.populate('generalInformation');
+    // await newSubject.populate({
+    //   path: 'healthConditions',
+    //   populate: { path: 'healthConditionItems' },
+    // });
+    // await newSubject.populate({
+    //   path: 'functionAbilities',
+    //   populate: { path: 'functionAbilityItems' },
+    // });
+    // await newSubject.populate('address');
+    // await newSubject.populate('generalInformation');
 
     console.log(await this.dataServices._subjectDocumentModel.db.db.stats());
     console.log(
@@ -65,32 +61,32 @@ export class SubjectsService {
 
   async findAll(): Promise<Subject[]> {
     return this.dataServices._subjectDocumentModel
-      .find()
-      .populate('address')
-      .populate('generalInformation')
-      .populate({
-        path: 'healthConditions',
-        populate: { path: 'healthConditionItems' },
-      })
-      .populate({
-        path: 'functionAbilities',
-        populate: { path: 'functionAbilityItems' },
-      });
+      .find();
+      // .populate('address')
+      // .populate('generalInformation')
+      // .populate({
+      //   path: 'healthConditions',
+      //   populate: { path: 'healthConditionItems' },
+      // })
+      // .populate({
+      //   path: 'functionAbilities',
+      //   populate: { path: 'functionAbilityItems' },
+      // });
   }
 
   async findOne(id: string): Promise<Subject> {
     return this.dataServices._subjectDocumentModel
-      .findOne({ _id: id })
-      .populate('address')
-      .populate('generalInformation')
-      .populate({
-        path: 'healthConditions',
-        populate: { path: 'healthConditionItems' },
-      })
-      .populate({
-        path: 'functionAbilities',
-        populate: { path: 'functionAbilityItems' },
-      });
+      .findOne({ _id: id });
+      // .populate('address')
+      // .populate('generalInformation')
+      // .populate({
+      //   path: 'healthConditions',
+      //   populate: { path: 'healthConditionItems' },
+      // })
+      // .populate({
+      //   path: 'functionAbilities',
+      //   populate: { path: 'functionAbilityItems' },
+      // });
   }
 
   async remove(id: string): Promise<Subject> {

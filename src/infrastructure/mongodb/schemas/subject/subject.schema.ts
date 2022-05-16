@@ -30,7 +30,7 @@ export class Subject {
   @Type(() => Address)
   address: Address;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: GeneralInfo.name }])
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: GeneralInfo.name, autopopulate: true }])
   @Type(() => GeneralInfo)
   generalInformation: GeneralInfo[];
 
@@ -38,18 +38,20 @@ export class Subject {
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: HealthCondition.name,
+      autopopulate: true,
     },
   ])
   @Type(() => HealthCondition)
   healthConditions: HealthCondition[];
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: FunctionAbility.name }])
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: FunctionAbility.name, autopopulate: true, }])
   @Type(() => FunctionAbility)
   functionAbilities: FunctionAbility[];
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Note.name }])
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Note.name, autopopulate: true, }])
   @Type(() => Note)
   notes: Note[];
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);
+SubjectSchema.plugin(require('mongoose-autopopulate'));
