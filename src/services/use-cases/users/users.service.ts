@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
-import { CreateUserDto } from '../../../core';
+import { CreateUserDto, User } from '../../../core';
 
 @Injectable()
 class UsersService {

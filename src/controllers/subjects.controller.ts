@@ -1,14 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Req,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { SubjectsService } from '../services/use-cases/subjects/subjects.service';
 import {
