@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LocalAuthGuard } from './services/authentication/local-auth.guard';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -9,6 +9,16 @@ async function bootstrap() {
       allowedHeaders: '*',
     },
   });
+
+  const config = new DocumentBuilder()
+    .setTitle('SOSU-Backend')
+    .setDescription('SOSU Backend API for use with Angular and Android Studio')
+    .setVersion('1.0')
+    .addTag('SOSU')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

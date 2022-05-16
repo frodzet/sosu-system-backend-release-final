@@ -1,8 +1,8 @@
-import { Controller, Get, Body, Post, Param, Put } from "@nestjs/common";
+import { Controller, Get, Body, Post, Param, Put } from '@nestjs/common';
 import { UsersService } from '../services/use-cases/users/users.service';
-import { UpdateUserDto, User } from "../core";
+import { UpdateUserDto, User } from '../core';
 
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
@@ -17,7 +17,10 @@ export class UsersController {
   }
 
   @Put(':userId/addSubject')
-  addSubject(@Param('userId') userId: string, @Body() updateUserDto: UpdateUserDto) {
+  addSubject(
+    @Param('userId') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.usersService.addSubject(userId, updateUserDto);
   }
 }

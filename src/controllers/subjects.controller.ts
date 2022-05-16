@@ -17,7 +17,7 @@ import {
   UpdateHealthConditionItemDto,
 } from '../core';
 
-@Controller('subjects')
+@Controller('api/subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
