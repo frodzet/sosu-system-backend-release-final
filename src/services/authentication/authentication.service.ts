@@ -3,6 +3,7 @@ import { MongoDataServices } from '../../infrastructure/mongodb/mongo-data-servi
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto, RegistrationDto, User } from '../../core';
 import * as bcrypt from 'bcrypt';
+import { ROLES_KEY } from './roles/roles.decorator';
 
 @Injectable()
 export class AuthenticationService {
@@ -26,6 +27,7 @@ export class AuthenticationService {
         const newUser = new this.dataServices._userDocumentModel({
           userName: createUserDto.userName,
           password: hashedPassword,
+          role: ROLES_KEY,
         });
         newUser.save();
       },
@@ -44,7 +46,7 @@ export class AuthenticationService {
       loginDTO.password,
       userFromDb.password,
     );
-    if (rightPassword == true) {
+    if (userFromDb && rightPassword == true) {
       const payload = { userName: loginDTO.userName };
       return {
         access_token: this.jwtService.sign(payload),

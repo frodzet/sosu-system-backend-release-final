@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Configuration } from './configuration';
 import {
   Subject,
   SubjectSchema,
@@ -17,9 +16,13 @@ import {
   FunctionAbilityItem,
   FunctionAbilityItemSchema,
   UserSchema,
-  User, NoteSchema, Note
-} from "./schemas";
+  User,
+  NoteSchema,
+  Note,
+} from './schemas';
 import { MongoDataServices } from './mongo-data-services.service';
+import { MongooseConfigService } from './mongo-config.service';
+import { connection, Connection } from 'mongoose';
 
 @Module({
   imports: [
@@ -34,7 +37,10 @@ import { MongoDataServices } from './mongo-data-services.service';
       { name: FunctionAbilityItem.name, schema: FunctionAbilityItemSchema },
       { name: Note.name, schema: NoteSchema },
     ]),
-    MongooseModule.forRoot(Configuration.urlKEY),
+    // MongooseModule.forRoot(Configuration.urlKEY),
+    MongooseModule.forRootAsync({
+      useClass: MongooseConfigService,
+    }),
   ],
   providers: [MongoDataServices],
   exports: [MongoDataServices],

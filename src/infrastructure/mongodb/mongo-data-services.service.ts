@@ -18,8 +18,7 @@ import {
   GeneralInfo,
   FunctionAbility,
   Note,
-} from "./schemas";
-
+} from './schemas';
 
 @Injectable()
 export class MongoDataServices implements OnApplicationBootstrap {
@@ -53,10 +52,9 @@ export class MongoDataServices implements OnApplicationBootstrap {
     @InjectModel(Note.name)
     private noteDocumentModel: Model<Note>,
   ) {
-    // this.subjectDocumentModel.db.db
-    //   .dropDatabase()
-    //   .then((r) => console.log('database dropped'));
-
+    this.subjectDocumentModel.db.db
+      .dropDatabase()
+      .then((r) => console.log('database dropped'));
     // DB-Collection Size Test
   }
 

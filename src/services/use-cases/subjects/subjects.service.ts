@@ -36,6 +36,7 @@ export class SubjectsService {
       notes: createSubjectDto.notes,
     });
 
+    /* WE ADDED AUTO-POPULATE, BELOW CODE IS REDUNDANT */
     // await newSubject.populate('address'); // Consider setting up 'mongoose-autopopulate'
     // await newSubject.populate('generalInformation');
     // await newSubject.populate({
@@ -60,33 +61,31 @@ export class SubjectsService {
   }
 
   async findAll(): Promise<Subject[]> {
-    return this.dataServices._subjectDocumentModel
-      .find();
-      // .populate('address')
-      // .populate('generalInformation')
-      // .populate({
-      //   path: 'healthConditions',
-      //   populate: { path: 'healthConditionItems' },
-      // })
-      // .populate({
-      //   path: 'functionAbilities',
-      //   populate: { path: 'functionAbilityItems' },
-      // });
+    return this.dataServices._subjectDocumentModel.find();
+    // .populate('address')
+    // .populate('generalInformation')
+    // .populate({
+    //   path: 'healthConditions',
+    //   populate: { path: 'healthConditionItems' },
+    // })
+    // .populate({
+    //   path: 'functionAbilities',
+    //   populate: { path: 'functionAbilityItems' },
+    // });
   }
 
   async findOne(id: string): Promise<Subject> {
-    return this.dataServices._subjectDocumentModel
-      .findOne({ _id: id });
-      // .populate('address')
-      // .populate('generalInformation')
-      // .populate({
-      //   path: 'healthConditions',
-      //   populate: { path: 'healthConditionItems' },
-      // })
-      // .populate({
-      //   path: 'functionAbilities',
-      //   populate: { path: 'functionAbilityItems' },
-      // });
+    return this.dataServices._subjectDocumentModel.findOne({ _id: id });
+    // .populate('address')
+    // .populate('generalInformation')
+    // .populate({
+    //   path: 'healthConditions',
+    //   populate: { path: 'healthConditionItems' },
+    // })
+    // .populate({
+    //   path: 'functionAbilities',
+    //   populate: { path: 'functionAbilityItems' },
+    // });
   }
 
   async remove(id: string): Promise<Subject> {
