@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
+  UseInterceptors,
 } from '@nestjs/common';
 import { SubjectsService } from '../services/use-cases/subjects/subjects.service';
 import {
@@ -16,20 +18,20 @@ import {
   UpdateAddressDto,
   UpdateHealthConditionItemDto,
 } from '../core';
-import { LocalAuthGuard } from '../services/authentication/local/local-auth.guard';
-import { JwtAuthGuard } from '../services/authentication/jwt/jwt-auth.guard';
-import { Roles } from '../services/authentication/roles/roles.decorator';
-import { Role } from '../services/authentication/roles/roles.enum';
+import JwtAuthenticationGuard from '../services/authentication/jwt/jwt-auth.guard';
+import RequestWithUser from '../services/authentication/requestWithUser.interface';
 
 @Controller('api/subjects')
-@UseGuards(JwtAuthGuard)
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Post()
-  @Roles()
-  create(@Body() createSubjectDto: CreateSubjectDto) {
-    return this.subjectsService.create(createSubjectDto);
+  @UseGuards(JwtAuthenticationGuard)
+  create(
+    @Body() createSubjectDto: CreateSubjectDto,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.subjectsService.create(createSubjectDto, req.user);
   }
 
   @Get()

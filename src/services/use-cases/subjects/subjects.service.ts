@@ -14,6 +14,7 @@ import {
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
+import { User } from '../../../infrastructure/mongodb/schemas';
 const mongoose = require('mongoose');
 
 @Injectable()
@@ -23,7 +24,10 @@ export class SubjectsService {
     private titlesGenerator: TitlesGenerator,
   ) {}
 
-  async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
+  async create(
+    createSubjectDto: CreateSubjectDto,
+    user: User,
+  ): Promise<Subject> {
     const newSubject = await this.dataServices._subjectDocumentModel.create({
       firstName: createSubjectDto.firstName,
       lastName: createSubjectDto.lastName,

@@ -1,66 +1,82 @@
-import { Injectable } from '@nestjs/common';
-import { MongoDataServices } from '../../infrastructure/mongodb/mongo-data-services.service';
-import { JwtService } from '@nestjs/jwt';
-import { LoginDto, RegistrationDto, User } from '../../core';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ROLES_KEY } from './roles/roles.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { RegisterDto } from '../../core';
+import TokenPayload from './token-payload.interface';
+import MongoError from '../../infrastructure/mongodb/utils/mongo-error.enum';
+import UsersService from '../use-cases/users/users.service';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private dataServices: MongoDataServices,
-    private jwtService: JwtService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
-  //this method registers a user
-  async create(createUserDto: RegistrationDto) {
-    this.dataServices._userDocumentModel.find().then((allUsers) => {
-      allUsers.forEach(function (user) {
-        if (user.userName == createUserDto.userName) {
-          throw new Error('userName already in use');
-        }
+  public async register(registrationData: RegisterDto) {
+    const hashedPassword = await bcrypt.hash(registrationData.password, 10);
+    try {
+      return await this.usersService.create({
+        ...registrationData,
+        password: hashedPassword,
       });
-    });
-    const generatedSalt = await bcrypt.genSalt();
-    this.hashPassword(createUserDto.password, generatedSalt).then(
-      (hashedPassword) => {
-        const newUser = new this.dataServices._userDocumentModel({
-          userName: createUserDto.userName,
-          password: hashedPassword,
-          role: ROLES_KEY,
-        });
-        newUser.save();
-      },
-    );
-  }
-
-  //this method hashes a password using a salt, it is used when creating an account and logging in
-  async hashPassword(password: string, salt: string): Promise<string> {
-    return await bcrypt.hash(password, salt);
-  }
-
-  //this compares 2 passwords, and returns a user if the password was correct.
-  async validateUser(loginDTO: LoginDto) {
-    const userFromDb = await this.getUser(loginDTO);
-    const rightPassword = await bcrypt.compare(
-      loginDTO.password,
-      userFromDb.password,
-    );
-    if (userFromDb && rightPassword == true) {
-      const payload = { userName: loginDTO.userName };
-      return {
-        access_token: this.jwtService.sign(payload),
-      };
-    } else {
-      throw new Error('The entered password was wrong password');
+    } catch (error) {
+      if (error?.code === MongoError.DuplicateKey) {
+        throw new HttpException(
+          'User with that email already exists',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async getUser(loginDTO: LoginDto): Promise<User> {
-    return await this.dataServices._userDocumentModel
-      .findOne({
-        userName: loginDTO.userName,
-      })
-      .exec();
+  public getCookieWithJwtToken(userName: string) {
+    const payload: TokenPayload = { userName };
+    const token = this.jwtService.sign(payload);
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_EXPIRATION_TIME',
+    )}s`;
+  }
+
+  public getCookieForLogOut() {
+    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+  }
+
+  public async getAuthenticatedUser(
+    userName: string,
+    plainTextPassword: string,
+  ) {
+    try {
+      const user = await this.usersService.getByUsername(userName);
+      await this.verifyPassword(plainTextPassword, user.password);
+      return user;
+    } catch (error) {
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  private async verifyPassword(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ) {
+    const isPasswordMatching = await bcrypt.compare(
+      plainTextPassword,
+      hashedPassword,
+    );
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

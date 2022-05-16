@@ -1,7 +1,6 @@
 import { Role } from '../../../services/authentication/roles/roles.enum';
 
-export class RegistrationDto {
+export class RegisterDto {
   userName: string;
   password: string;
-  roles: Role[];
 }
