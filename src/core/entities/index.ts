@@ -1,4 +1,4 @@
-export * from './user/user.entity';
+// export * from './user/user.entity';
 export * from './subject/subject.entity';
 export * from './subject/address.entity';
 export * from './subject/general-info/general-info.entity';

@@ -2,8 +2,6 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
-  User,
-  UserDocument,
   Subject,
   SubjectDocument,
   Address,
@@ -18,12 +16,11 @@ import {
   GeneralInfo,
   FunctionAbility,
   Note,
-} from "./schemas";
-
+} from './schemas';
 
 @Injectable()
 export class MongoDataServices implements OnApplicationBootstrap {
-  _userDocumentModel: Model<UserDocument>;
+  // _userDocumentModel: Model<UserDocument>;
   _subjectDocumentModel: Model<SubjectDocument>;
   _addressDocumentModel: Model<AddressDocument>;
   _generalInfoDocumentModel: Model<GeneralInfoDocument>;
@@ -34,8 +31,8 @@ export class MongoDataServices implements OnApplicationBootstrap {
   _noteDocumentModel: Model<Note>;
 
   constructor(
-    @InjectModel(User.name)
-    private userDocumentModel: Model<UserDocument>,
+    // @InjectModel(User.name)
+    // private userDocumentModel: Model<UserDocument>,
     @InjectModel(Subject.name)
     private subjectDocumentModel: Model<SubjectDocument>,
     @InjectModel(Address.name)
@@ -56,12 +53,11 @@ export class MongoDataServices implements OnApplicationBootstrap {
     // this.subjectDocumentModel.db.db
     //   .dropDatabase()
     //   .then((r) => console.log('database dropped'));
-
     // DB-Collection Size Test
   }
 
   onApplicationBootstrap() {
-    this._userDocumentModel = this.userDocumentModel;
+    // this._userDocumentModel = this.userDocumentModel;
     this._subjectDocumentModel = this.subjectDocumentModel;
     this._addressDocumentModel = this.addressDocumentModel;
     this._generalInfoDocumentModel = this.generalInfoDocumentModel;
