@@ -21,16 +21,13 @@ import JwtAuthenticationGuard from '../services/authentication/jwt/jwt-auth.guar
 import RequestWithUser from '../services/authentication/requestWithUser.interface';
 
 @Controller('api/subjects')
+@UseGuards(JwtAuthenticationGuard)
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Post()
-  @UseGuards(JwtAuthenticationGuard)
-  create(
-    @Body() createSubjectDto: CreateSubjectDto,
-    @Req() req: RequestWithUser,
-  ) {
-    return this.subjectsService.create(createSubjectDto, req.user);
+  create(@Body() createSubjectDto: CreateSubjectDto) {
+    return this.subjectsService.create(createSubjectDto);
   }
 
   @Get()

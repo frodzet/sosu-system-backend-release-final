@@ -24,10 +24,7 @@ export class SubjectsService {
     private titlesGenerator: TitlesGenerator,
   ) {}
 
-  async create(
-    createSubjectDto: CreateSubjectDto,
-    user: User,
-  ): Promise<Subject> {
+  async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
     const newSubject = await this.dataServices._subjectDocumentModel.create({
       firstName: createSubjectDto.firstName,
       lastName: createSubjectDto.lastName,
