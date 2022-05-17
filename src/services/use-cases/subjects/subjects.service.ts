@@ -16,6 +16,11 @@ import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-se
 import { TitlesGenerator } from './utils/item-titles-generator';
 const mongoose = require('mongoose');
 
+/*
+ * Todo: Få opsat alle routes og lavet metoder dertil.
+ *  Kig på roles guard og få det implementeret. Lige nu kan alle med en login-token
+ *  lave subjects.
+ */
 @Injectable()
 export class SubjectsService {
   constructor(
