@@ -135,13 +135,43 @@ export class SubjectsService {
   //     );
   // }
 
-  async findHealthCondition(
+  async findSingleHealthCondition(
     subjectId: string,
     index: number,
   ): Promise<HealthCondition> {
     return await this.dataServices._subjectDocumentModel
       .findOne({ _id: subjectId })
       .then((subject) => subject.healthConditions[index]);
+  }
+
+  async findSingleHealthConditionItem(
+    subjectId: string,
+    index: number,
+    itemIndex: number,
+  ): Promise<HealthConditionItem> {
+    return await this.dataServices._subjectDocumentModel
+      .findOne({ _id: subjectId })
+      .then(
+        (subject) =>
+          subject.healthConditions[index].healthConditionItems[itemIndex],
+      );
+  }
+
+  async updateSingleHealthConditionItem(
+    subjectId: string,
+    index: number,
+    itemIndex: number,
+    updateHealthConditionItemDto: UpdateHealthConditionItemDto,
+  ): Promise<HealthConditionItem> {
+    const healthConditionItem = await this.dataServices._subjectDocumentModel
+      .findOne({ _id: subjectId })
+      .find({ index: index })
+      .find({ index: itemIndex });
+    return this.dataServices._healthConditionItemDocumentModel.findOneAndUpdate(
+      healthConditionItem,
+      updateHealthConditionItemDto,
+      { new: true },
+    );
   }
 
   /* Helper Methods */

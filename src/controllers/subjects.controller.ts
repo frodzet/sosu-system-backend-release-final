@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { SubjectsService } from '../services/use-cases/subjects/subjects.service';
@@ -22,27 +23,27 @@ import { Roles } from '../services/authentication/roles/roles.decorator';
 import Role from '../services/authentication/roles/role.enum';
 
 @Controller('api/subjects')
-@UseGuards(JwtAuthenticationGuard)
+// @UseGuards(JwtAuthenticationGuard)
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Post()
-  create(@Body() createSubjectDto: CreateSubjectDto) {
+  async create(@Body() createSubjectDto: CreateSubjectDto) {
     return this.subjectsService.create(createSubjectDto);
   }
 
   @Get()
-  findAll(): Promise<Subject[]> {
+  async findAll(): Promise<Subject[]> {
     return this.subjectsService.findAll();
   }
 
   @Get(':subjectId')
-  findOne(@Param('subjectId') subjectId: string): Promise<Subject> {
+  async findOne(@Param('subjectId') subjectId: string): Promise<Subject> {
     return this.subjectsService.findOne(subjectId);
   }
 
   @Patch(':subjectId')
-  update(
+  async update(
     @Param('subjectId') subjectId: string,
     @Body() updateSubjectDto: UpdateSubjectDto,
   ) {
@@ -51,28 +52,48 @@ export class SubjectsController {
 
   //
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.subjectsService.remove(id);
   }
 
   @Get(':subjectId/health-conditions')
-  findAllHealthConditions(@Param('subjectId') subjectId: string) {
+  async findAllHealthConditions(@Param('subjectId') subjectId: string) {
     return this.subjectsService.findAllHealthConditions(subjectId);
   }
 
-  // @Get(':subjectId/health-conditions/:itemId')
-  // findHealthCondition(
-  //   @Param('subjectId') subjectId: string,
-  //   @Param('itemId') itemId: string,
-  // ) {
-  //   return this.subjectsService.findHealthCondition(subjectId, itemId);
-  // }
-
   @Get(':subjectId/health-conditions/:index')
-  findHealthCondition(
+  async findSingleHealthCondition(
     @Param('subjectId') subjectId: string,
     @Param('index') index: number,
   ) {
-    return this.subjectsService.findHealthCondition(subjectId, index);
+    return this.subjectsService.findSingleHealthCondition(subjectId, index);
+  }
+
+  @Get(':subjectId/health-conditions/:index/:itemIndex')
+  async findSingleHealthConditionItem(
+    @Param('subjectId') subjectId: string,
+    @Param('index') index: number,
+    @Param('itemIndex') itemIndex: number,
+  ) {
+    return this.subjectsService.findSingleHealthConditionItem(
+      subjectId,
+      index,
+      itemIndex,
+    );
+  }
+
+  @Put(':subjectId/health-conditions/:index/:itemIndex')
+  async updateSingleHealthConditionItem(
+    @Param('subjectId') subjectId: string,
+    @Param('index') index: number,
+    @Param('itemIndex') itemIndex: number,
+    @Body() updateHealthConditionItemDto: UpdateHealthConditionItemDto,
+  ) {
+    return this.subjectsService.updateSingleHealthConditionItem(
+      subjectId,
+      index,
+      itemIndex,
+      updateHealthConditionItemDto,
+    );
   }
 }
