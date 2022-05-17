@@ -48,14 +48,6 @@ export class SubjectsController {
     return this.subjectsService.updateAddress(addressId, updateAddressDto);
   }
 
-  @Patch(':subjectId/items/:itemId')
-  updateItem(
-    @Param('subjectId') subjectId: string,
-    @Param('itemId') itemId: string,
-    @Body() updateItemDto: UpdateHealthConditionItemDto,
-  ): Promise<HealthConditionItem> {
-    return this.subjectsService.updateItem(subjectId, itemId, updateItemDto);
-  }
   //
   @Delete(':id')
   remove(@Param('id') id: string) {
@@ -63,8 +55,8 @@ export class SubjectsController {
   }
 
   @Get(':subjectId/health-conditions/')
-  findHealthConditions(@Param('subjectId') subjectId: string) {
-    return this.subjectsService.findHealthConditions(subjectId);
+  findAllHealthConditions(@Param('subjectId') subjectId: string) {
+    return this.subjectsService.findAllHealthConditions(subjectId);
   }
 
   @Get(':subjectId/health-conditions/:itemId')
@@ -73,16 +65,5 @@ export class SubjectsController {
     @Param('itemId') itemId: string,
   ) {
     return this.subjectsService.findHealthCondition(subjectId, itemId);
-  }
-
-  @Get(':subjectId/health-conditions/:itemId/:singleItemId')
-  findHealthConditionItem(
-    @Param('subjectId') subjectId: string,
-    @Param('singleItemId') singleItemId: string,
-  ) {
-    return this.subjectsService.findHealthConditionItem(
-      subjectId,
-      singleItemId,
-    );
   }
 }

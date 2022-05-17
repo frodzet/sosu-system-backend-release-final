@@ -114,7 +114,7 @@ export class SubjectsService {
     );
   }
 
-  async findHealthConditions(subjectId: string): Promise<HealthCondition[]> {
+  async findAllHealthConditions(subjectId: string): Promise<HealthCondition[]> {
     return this.dataServices._subjectDocumentModel
       .findOne({ _id: subjectId })
       .then((s) => s.healthConditions);
