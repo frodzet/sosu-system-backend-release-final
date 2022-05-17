@@ -51,9 +51,9 @@ export class SubjectsController {
   }
 
   //
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.subjectsService.remove(id);
+  @Delete(':subjectId')
+  async remove(@Param('subjectId') subjectId: string) {
+    return this.subjectsService.remove(subjectId);
   }
 
   @Get(':subjectId/health-conditions')

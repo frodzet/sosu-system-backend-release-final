@@ -83,8 +83,8 @@ export class SubjectsService {
     // });
   }
 
-  async findOne(id: string): Promise<Subject> {
-    return this.dataServices._subjectDocumentModel.findOne({ _id: id });
+  async findOne(subjectId: string): Promise<Subject> {
+    return this.dataServices._subjectDocumentModel.findOne({ _id: subjectId });
     // .populate('address')
     // .populate('generalInformation')
     // .populate({
@@ -108,9 +108,9 @@ export class SubjectsService {
     );
   }
 
-  async remove(id: string): Promise<Subject> {
+  async remove(subjectId: string): Promise<Subject> {
     return this.dataServices._subjectDocumentModel.findByIdAndRemove({
-      _id: id,
+      _id: subjectId,
     });
   }
 
@@ -167,6 +167,7 @@ export class SubjectsService {
       .findOne({ _id: subjectId })
       .find({ index: index })
       .find({ index: itemIndex });
+
     return this.dataServices._healthConditionItemDocumentModel.findOneAndUpdate(
       healthConditionItem,
       updateHealthConditionItemDto,
@@ -215,7 +216,7 @@ export class SubjectsService {
           await this.dataServices._healthConditionItemDocumentModel.create({
             _id: mongoose.Types.ObjectId(),
             subTitle: subTitle,
-            description: null,
+            comment: null,
             reason: null,
             relevant: null,
           });

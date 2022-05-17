@@ -13,7 +13,7 @@ export class HealthConditionItem {
   subTitle: string;
 
   @Prop()
-  description: string;
+  comment: string;
 
   @Prop()
   reason: string;

@@ -1,6 +1,6 @@
 export class HealthConditionItem {
   subTitle: string;
-  description: string;
+  comment: string;
   reason: string;
   relevant: number;
 }
