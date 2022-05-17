@@ -15,6 +15,7 @@ import {
   Subject,
   UpdateAddressDto,
   UpdateHealthConditionItemDto,
+  UpdateSubjectDto,
 } from '../core';
 import JwtAuthenticationGuard from '../services/authentication/jwt/jwt-auth.guard';
 import { Roles } from '../services/authentication/roles/roles.decorator';
@@ -40,12 +41,12 @@ export class SubjectsController {
     return this.subjectsService.findOne(subjectId);
   }
 
-  @Patch(':addressId')
+  @Patch(':subjectId')
   update(
-    @Param('addressId') addressId: string,
-    @Body() updateAddressDto: UpdateAddressDto,
+    @Param('subjectId') subjectId: string,
+    @Body() updateSubjectDto: UpdateSubjectDto,
   ) {
-    return this.subjectsService.updateAddress(addressId, updateAddressDto);
+    return this.subjectsService.update(subjectId, updateSubjectDto);
   }
 
   //
@@ -54,16 +55,24 @@ export class SubjectsController {
     return this.subjectsService.remove(id);
   }
 
-  @Get(':subjectId/health-conditions/')
+  @Get(':subjectId/health-conditions')
   findAllHealthConditions(@Param('subjectId') subjectId: string) {
     return this.subjectsService.findAllHealthConditions(subjectId);
   }
 
-  @Get(':subjectId/health-conditions/:itemId')
+  // @Get(':subjectId/health-conditions/:itemId')
+  // findHealthCondition(
+  //   @Param('subjectId') subjectId: string,
+  //   @Param('itemId') itemId: string,
+  // ) {
+  //   return this.subjectsService.findHealthCondition(subjectId, itemId);
+  // }
+
+  @Get(':subjectId/health-conditions/:index')
   findHealthCondition(
     @Param('subjectId') subjectId: string,
-    @Param('itemId') itemId: string,
+    @Param('index') index: number,
   ) {
-    return this.subjectsService.findHealthCondition(subjectId, itemId);
+    return this.subjectsService.findHealthCondition(subjectId, index);
   }
 }

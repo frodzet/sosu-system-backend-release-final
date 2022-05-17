@@ -11,6 +11,7 @@ import {
   UpdateHealthConditionItemDto,
   FunctionAbility,
   FunctionAbilityItem,
+  UpdateSubjectDto,
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
@@ -54,6 +55,10 @@ export class SubjectsService {
     // await newSubject.populate('address');
     // await newSubject.populate('generalInformation');
 
+    /*
+     * Used for checking database-size - we're just logging it.
+     * Current condition: FINE
+     */
     console.log(await this.dataServices._subjectDocumentModel.db.db.stats());
     console.log(
       await this.dataServices._subjectDocumentModel.db
@@ -92,27 +97,25 @@ export class SubjectsService {
     // });
   }
 
+  async update(
+    subjectId: string,
+    updateSubjectDto: UpdateSubjectDto,
+  ): Promise<Subject> {
+    return this.dataServices._subjectDocumentModel.findOneAndUpdate(
+      { _id: subjectId },
+      updateSubjectDto,
+      { new: true },
+    );
+  }
+
   async remove(id: string): Promise<Subject> {
     return this.dataServices._subjectDocumentModel.findByIdAndRemove({
       _id: id,
     });
   }
 
-  /*Her opsætter vi alle vores metoder som vi skal bruge til at håndtere diverse borgere og deres data
+  /* Her opsætter vi alle vores metoder som vi skal bruge til at håndtere diverse borgere og deres data
    * Vi skal have sat routes op i frontend, så vi kan tilføje dem her i backend */
-
-  async updateAddress(
-    addressId: string,
-    updateAddressDto: UpdateAddressDto,
-  ): Promise<Address> {
-    return this.dataServices._addressDocumentModel.findOneAndUpdate(
-      {
-        _id: addressId,
-      },
-      updateAddressDto,
-      { new: true },
-    );
-  }
 
   async findAllHealthConditions(subjectId: string): Promise<HealthCondition[]> {
     return this.dataServices._subjectDocumentModel
@@ -120,16 +123,25 @@ export class SubjectsService {
       .then((s) => s.healthConditions);
   }
 
+  // async findHealthCondition(
+  //   subjectId: string,
+  //   itemId: string,
+  // ): Promise<HealthCondition> {
+  //   return this.dataServices._subjectDocumentModel
+  //     .findOne({ _id: subjectId })
+  //     .then((s) => s.healthConditions)
+  //     .then((healthConditions) =>
+  //       healthConditions.find((h) => h._id.toString() === itemId),
+  //     );
+  // }
+
   async findHealthCondition(
     subjectId: string,
-    itemId: string,
+    index: number,
   ): Promise<HealthCondition> {
-    return this.dataServices._subjectDocumentModel
+    return await this.dataServices._subjectDocumentModel
       .findOne({ _id: subjectId })
-      .then((s) => s.healthConditions)
-      .then((healthConditions) =>
-        healthConditions.find((h) => h._id.toString() === itemId),
-      );
+      .then((subject) => subject.healthConditions[index]);
   }
 
   /* Helper Methods */
