@@ -12,6 +12,7 @@ import {
   FunctionAbility,
   FunctionAbilityItem,
   UpdateSubjectDto,
+  CreateHealthConditionDto,
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
@@ -109,6 +110,8 @@ export class SubjectsService {
   }
 
   async remove(subjectId: string): Promise<Subject> {
+    /* TODO: Create a function that deletes all relations from the database
+     *   as well */
     return this.dataServices._subjectDocumentModel.findByIdAndRemove({
       _id: subjectId,
     });
@@ -122,18 +125,6 @@ export class SubjectsService {
       .findOne({ _id: subjectId })
       .then((s) => s.healthConditions);
   }
-
-  // async findHealthCondition(
-  //   subjectId: string,
-  //   itemId: string,
-  // ): Promise<HealthCondition> {
-  //   return this.dataServices._subjectDocumentModel
-  //     .findOne({ _id: subjectId })
-  //     .then((s) => s.healthConditions)
-  //     .then((healthConditions) =>
-  //       healthConditions.find((h) => h._id.toString() === itemId),
-  //     );
-  // }
 
   async findSingleHealthCondition(
     subjectId: string,
@@ -158,18 +149,11 @@ export class SubjectsService {
   }
 
   async updateSingleHealthConditionItem(
-    subjectId: string,
-    index: number,
-    itemIndex: number,
+    healthConditionItemId: string,
     updateHealthConditionItemDto: UpdateHealthConditionItemDto,
   ): Promise<HealthConditionItem> {
-    const healthConditionItem = await this.dataServices._subjectDocumentModel
-      .findOne({ _id: subjectId })
-      .find({ index: index })
-      .find({ index: itemIndex });
-
     return this.dataServices._healthConditionItemDocumentModel.findOneAndUpdate(
-      healthConditionItem,
+      { _id: healthConditionItemId },
       updateHealthConditionItemDto,
       { new: true },
     );

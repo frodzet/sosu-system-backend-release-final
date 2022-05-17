@@ -82,17 +82,13 @@ export class SubjectsController {
     );
   }
 
-  @Put(':subjectId/health-conditions/:index/:itemIndex')
+  @Put(':subjectId/health-conditions/:healthConditionId/:healthConditionItemId')
   async updateSingleHealthConditionItem(
-    @Param('subjectId') subjectId: string,
-    @Param('index') index: number,
-    @Param('itemIndex') itemIndex: number,
+    @Param('healthConditionItemId') healthConditionItemId: string,
     @Body() updateHealthConditionItemDto: UpdateHealthConditionItemDto,
   ) {
     return this.subjectsService.updateSingleHealthConditionItem(
-      subjectId,
-      index,
-      itemIndex,
+      healthConditionItemId,
       updateHealthConditionItemDto,
     );
   }

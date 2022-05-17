@@ -14,23 +14,29 @@ export class Subject {
   @Transform(({ value }) => value.toString())
   _id: mongoose.Schema.Types.ObjectId;
 
-  @Prop()
+  @Prop({ required: true })
   firstName: string;
 
-  @Prop()
+  @Prop({ required: true })
   lastName: string;
 
-  @Prop()
+  @Prop({ required: true })
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
   phone: string;
 
-  @Prop({ type: AddressSchema })
+  @Prop({ type: AddressSchema, required: true })
   @Type(() => Address)
   address: Address;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: GeneralInfo.name, autopopulate: true }])
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: GeneralInfo.name,
+      autopopulate: true,
+    },
+  ])
   @Type(() => GeneralInfo)
   generalInformation: GeneralInfo[];
 
@@ -44,11 +50,23 @@ export class Subject {
   @Type(() => HealthCondition)
   healthConditions: HealthCondition[];
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: FunctionAbility.name, autopopulate: true, }])
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: FunctionAbility.name,
+      autopopulate: true,
+    },
+  ])
   @Type(() => FunctionAbility)
   functionAbilities: FunctionAbility[];
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Note.name, autopopulate: true, }])
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Note.name,
+      autopopulate: true,
+    },
+  ])
   @Type(() => Note)
   notes: Note[];
 }
