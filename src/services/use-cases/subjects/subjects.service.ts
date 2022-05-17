@@ -14,7 +14,6 @@ import {
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
-import { User } from '../../../infrastructure/mongodb/schemas';
 const mongoose = require('mongoose');
 
 @Injectable()
@@ -34,7 +33,6 @@ export class SubjectsService {
       generalInformation: await this.createGeneralInformation(),
       healthConditions: await this.createHealthConditions(),
       functionAbilities: await this.createFunctionAbilities(),
-      notes: createSubjectDto.notes,
     });
 
     /* WE ADDED AUTO-POPULATE, BELOW CODE IS REDUNDANT */
@@ -95,6 +93,9 @@ export class SubjectsService {
     });
   }
 
+  /*Her opsætter vi alle vores metoder som vi skal bruge til at håndtere diverse borgere og deres data
+   * Vi skal have sat routes op i frontend, så vi kan tilføje dem her i backend */
+
   async updateAddress(
     addressId: string,
     updateAddressDto: UpdateAddressDto,
@@ -108,16 +109,22 @@ export class SubjectsService {
     );
   }
 
-  async updateItem(
+  async findHealthConditions(subjectId: string): Promise<HealthCondition[]> {
+    return this.dataServices._subjectDocumentModel
+      .findOne({ _id: subjectId })
+      .then((s) => s.healthConditions);
+  }
+
+  async findHealthCondition(
     subjectId: string,
     itemId: string,
-    updateItemDto: UpdateHealthConditionItemDto,
-  ): Promise<HealthConditionItem> {
-    return this.dataServices._healthConditionItemDocumentModel.findOneAndUpdate(
-      { _id: itemId },
-      updateItemDto,
-      { new: true },
-    );
+  ): Promise<HealthCondition> {
+    return this.dataServices._subjectDocumentModel
+      .findOne({ _id: subjectId })
+      .then((s) => s.healthConditions)
+      .then((healthConditions) =>
+        healthConditions.find((h) => h._id.toString() === itemId),
+      );
   }
 
   /* Helper Methods */
@@ -281,9 +288,4 @@ export class SubjectsService {
   //         ]),
   //     },
   //   ]),
-  async getItem(id: string, itemId: string): Promise<HealthConditionItem> {
-    return this.dataServices._healthConditionItemDocumentModel.findOne({
-      _id: itemId,
-    });
-  }
 }

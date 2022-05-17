@@ -23,6 +23,8 @@ import {
 import { MongoDataServices } from './mongo-data-services.service';
 import { MongooseConfigService } from './mongo-config.service';
 import { connection, Connection } from 'mongoose';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from '../../services/authentication/roles/roles.guard';
 
 @Module({
   imports: [

@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { SubjectsService } from '../services/use-cases/subjects/subjects.service';
@@ -18,7 +17,8 @@ import {
   UpdateHealthConditionItemDto,
 } from '../core';
 import JwtAuthenticationGuard from '../services/authentication/jwt/jwt-auth.guard';
-import RequestWithUser from '../services/authentication/requestWithUser.interface';
+import { Roles } from '../services/authentication/roles/roles.decorator';
+import Role from '../services/authentication/roles/role.enum';
 
 @Controller('api/subjects')
 @UseGuards(JwtAuthenticationGuard)
@@ -40,11 +40,6 @@ export class SubjectsController {
     return this.subjectsService.findOne(subjectId);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.subjectsService.findOne(+id);
-  // }
-  //
   @Patch(':addressId')
   update(
     @Param('addressId') addressId: string,
@@ -67,8 +62,27 @@ export class SubjectsController {
     return this.subjectsService.remove(id);
   }
 
-  @Get(':id/items/:itemId')
-  getItem(@Param('id') id: string, @Param('itemId') itemId: string) {
-    return this.subjectsService.getItem(id, itemId);
+  @Get(':subjectId/health-conditions/')
+  findHealthConditions(@Param('subjectId') subjectId: string) {
+    return this.subjectsService.findHealthConditions(subjectId);
+  }
+
+  @Get(':subjectId/health-conditions/:itemId')
+  findHealthCondition(
+    @Param('subjectId') subjectId: string,
+    @Param('itemId') itemId: string,
+  ) {
+    return this.subjectsService.findHealthCondition(subjectId, itemId);
+  }
+
+  @Get(':subjectId/health-conditions/:itemId/:singleItemId')
+  findHealthConditionItem(
+    @Param('subjectId') subjectId: string,
+    @Param('singleItemId') singleItemId: string,
+  ) {
+    return this.subjectsService.findHealthConditionItem(
+      subjectId,
+      singleItemId,
+    );
   }
 }

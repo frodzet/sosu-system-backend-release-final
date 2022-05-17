@@ -6,6 +6,8 @@ import { RegisterDto } from '../../core';
 import TokenPayload from './token-payload.interface';
 import MongoError from '../../infrastructure/mongodb/utils/mongo-error.enum';
 import UsersService from '../use-cases/users/users.service';
+import Role from './roles/role.enum';
+import { ROLES_KEY } from './roles/roles.decorator';
 
 @Injectable()
 export class AuthenticationService {
@@ -25,7 +27,7 @@ export class AuthenticationService {
     } catch (error) {
       if (error?.code === MongoError.DuplicateKey) {
         throw new HttpException(
-          'User with that email already exists',
+          'User with that userName already exists',
           HttpStatus.BAD_REQUEST,
         );
       }

@@ -8,6 +8,9 @@ import { JwtStrategy } from './jwt/jwt.strategy';
 import { AuthenticationController } from '../../controllers/authentication.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import UsersService from '../use-cases/users/users.service';
+import { Roles } from './roles/roles.decorator';
+import { RolesGuard } from './roles/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -26,6 +29,12 @@ import UsersService from '../use-cases/users/users.service';
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, JwtStrategy, LocalStrategy, UsersService],
+  providers: [
+    AuthenticationService,
+    JwtStrategy,
+    LocalStrategy,
+    UsersService,
+    RolesGuard,
+  ],
 })
 export class AuthenticationModule {}
