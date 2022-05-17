@@ -1,21 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
-  Subject,
   CreateSubjectDto,
-  Address,
-  UpdateAddressDto,
+  FunctionAbility,
+  FunctionAbilityItem,
   GeneralInfo,
   HealthCondition,
   HealthConditionItem,
+  Subject,
   UpdateHealthConditionItemDto,
-  FunctionAbility,
-  FunctionAbilityItem,
   UpdateSubjectDto,
-  CreateHealthConditionDto,
 } from '../../../core';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { TitlesGenerator } from './utils/item-titles-generator';
+import { HealthConditionSchema } from '../../../infrastructure/mongodb/schemas';
+
 const mongoose = require('mongoose');
 
 /*
@@ -124,39 +122,6 @@ export class SubjectsService {
     return this.dataServices._subjectDocumentModel
       .findOne({ _id: subjectId })
       .then((s) => s.healthConditions);
-  }
-
-  async findSingleHealthCondition(
-    subjectId: string,
-    index: number,
-  ): Promise<HealthCondition> {
-    return await this.dataServices._subjectDocumentModel
-      .findOne({ _id: subjectId })
-      .then((subject) => subject.healthConditions[index]);
-  }
-
-  async findSingleHealthConditionItem(
-    subjectId: string,
-    index: number,
-    itemIndex: number,
-  ): Promise<HealthConditionItem> {
-    return await this.dataServices._subjectDocumentModel
-      .findOne({ _id: subjectId })
-      .then(
-        (subject) =>
-          subject.healthConditions[index].healthConditionItems[itemIndex],
-      );
-  }
-
-  async updateSingleHealthConditionItem(
-    healthConditionItemId: string,
-    updateHealthConditionItemDto: UpdateHealthConditionItemDto,
-  ): Promise<HealthConditionItem> {
-    return this.dataServices._healthConditionItemDocumentModel.findOneAndUpdate(
-      { _id: healthConditionItemId },
-      updateHealthConditionItemDto,
-      { new: true },
-    );
   }
 
   /* Helper Methods */

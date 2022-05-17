@@ -60,36 +60,4 @@ export class SubjectsController {
   async findAllHealthConditions(@Param('subjectId') subjectId: string) {
     return this.subjectsService.findAllHealthConditions(subjectId);
   }
-
-  @Get(':subjectId/health-conditions/:index')
-  async findSingleHealthCondition(
-    @Param('subjectId') subjectId: string,
-    @Param('index') index: number,
-  ) {
-    return this.subjectsService.findSingleHealthCondition(subjectId, index);
-  }
-
-  @Get(':subjectId/health-conditions/:index/:itemIndex')
-  async findSingleHealthConditionItem(
-    @Param('subjectId') subjectId: string,
-    @Param('index') index: number,
-    @Param('itemIndex') itemIndex: number,
-  ) {
-    return this.subjectsService.findSingleHealthConditionItem(
-      subjectId,
-      index,
-      itemIndex,
-    );
-  }
-
-  @Put(':subjectId/health-conditions/:healthConditionId/:healthConditionItemId')
-  async updateSingleHealthConditionItem(
-    @Param('healthConditionItemId') healthConditionItemId: string,
-    @Body() updateHealthConditionItemDto: UpdateHealthConditionItemDto,
-  ) {
-    return this.subjectsService.updateSingleHealthConditionItem(
-      healthConditionItemId,
-      updateHealthConditionItemDto,
-    );
-  }
 }
