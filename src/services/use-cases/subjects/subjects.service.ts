@@ -17,11 +17,6 @@ import { TitlesGenerator } from './utils/item-titles-generator';
 
 const mongoose = require('mongoose');
 
-/*
- * Todo: Få opsat alle routes og lavet metoder dertil.
- *  Kig på roles guard og få det implementeret. Lige nu kan alle med en login-token
- *  lave subjects.
- */
 @Injectable()
 export class SubjectsService {
   constructor(
@@ -39,7 +34,6 @@ export class SubjectsService {
       generalInformation: await this.createGeneralInformation(),
       healthConditions: await this.createHealthConditions(),
       functionAbilities: await this.createFunctionAbilities(),
-      // notes: createSubjectDto.notes,
     });
 
     /* WE ADDED AUTO-POPULATE, BELOW CODE IS REDUNDANT */
@@ -68,30 +62,10 @@ export class SubjectsService {
 
   async findAll(): Promise<Subject[]> {
     return this.dataServices._subjectDocumentModel.find();
-    // .populate('address')
-    // .populate('generalInformation')
-    // .populate({
-    //   path: 'healthConditions',
-    //   populate: { path: 'healthConditionItems' },
-    // })
-    // .populate({
-    //   path: 'functionAbilities',
-    //   populate: { path: 'functionAbilityItems' },
-    // });
   }
 
   async findOne(subjectId: string): Promise<Subject> {
     return await this.getValidSubject(subjectId);
-    // .populate('address')
-    // .populate('generalInformation')
-    // .populate({
-    //   path: 'healthConditions',
-    //   populate: { path: 'healthConditionItems' },
-    // })
-    // .populate({
-    //   path: 'functionAbilities',
-    //   populate: { path: 'functionAbilityItems' },
-    // });
   }
 
   async update(
