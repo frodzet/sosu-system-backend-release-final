@@ -60,15 +60,15 @@ export class Subject {
   @Type(() => FunctionAbility)
   functionAbilities: FunctionAbility[];
 
-  @Prop([
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: Note.name,
-      autopopulate: true,
-    },
-  ])
-  @Type(() => Note)
-  notes: Note[];
+  // @Prop([
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: Note.name,
+  //     autopopulate: true,
+  //   },
+  // ])
+  // @Type(() => Note)
+  // notes: Note[];
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);

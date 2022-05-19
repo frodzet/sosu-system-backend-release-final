@@ -3,7 +3,7 @@ import { CreateHealthConditionItemDto } from './health-condition-item.dto';
 
 export class CreateHealthConditionDto {
   title: string;
-  healthConditionItems: CreateHealthConditionItemDto[];
+  healthConditionItems: CreateHealthConditionItemDto[] = [];
 }
 
 export class UpdateHealthConditionDto extends PartialType(

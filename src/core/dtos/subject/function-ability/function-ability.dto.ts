@@ -4,7 +4,7 @@ import { FunctionAbilityItem } from '../../../entities/subject/function-ability/
 export class CreateFunctionAbilityDto {
   title: string;
 
-  functionAbilityItems: FunctionAbilityItem[];
+  functionAbilityItems: FunctionAbilityItem[] = [];
 }
 
 export class UpdateFunctionAbilityDto extends PartialType(

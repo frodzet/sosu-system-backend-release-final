@@ -10,11 +10,11 @@ export class CreateSubjectDto {
   lastName: string;
   email: string;
   phone: string;
-  address: CreateAddressDto;
-  generalInformation: CreateGeneralInfoDto[];
-  healthConditions: CreateHealthConditionDto[];
-  functionAbilities: CreateFunctionAbilityDto[];
-  notes: CreateNoteDto[];
+  address: CreateAddressDto = new CreateAddressDto();
+  generalInformation: CreateGeneralInfoDto[] = [];
+  healthConditions: CreateHealthConditionDto[] = [];
+  functionAbilities: CreateFunctionAbilityDto[] = [];
+  // notes: CreateNoteDto[] = [];
 }
 
 export class UpdateSubjectDto extends PartialType(CreateSubjectDto) {}

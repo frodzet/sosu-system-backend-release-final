@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MongoDataServices } from '../../../infrastructure/mongodb/mongo-data-services.service';
 import { CreateUserDto, User } from '../../../core';
-import Role from '../../authentication/roles/role.enum';
 
 @Injectable()
 class UsersService {
